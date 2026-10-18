@@ -405,3 +405,10 @@ main{max-width:calc(var(--max) + var(--pad)*2);margin:0 auto;padding:0 var(--pad
 .nlist .notes{margin-top:14px}
 @media (max-width:720px){.notes{padding-left:12px}.notes p{font-size:15.5px}}
 .repo.wide .notes{grid-column:1/-1;margin-top:18px}
+/* photo captions: shown on hover, always on touch screens */
+.capt{position:absolute;left:12px;bottom:10px;z-index:3;font:13px/1 var(--mono);color:#fff;letter-spacing:.02em;
+  text-shadow:0 1px 6px rgba(0,0,0,.55);opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s;pointer-events:none}
+.sh:hover .capt{opacity:1;transform:none}
+@media (hover:none){.capt{opacity:1;transform:none;font-size:12px;left:9px;bottom:8px}}
+.grid2+.neurips{margin-top:40px}
+.neurips+.grid2{margin-top:40px}

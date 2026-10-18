@@ -24,9 +24,9 @@
   <i class="prog" id="prog" aria-hidden="true"></i>
   <a class="me" href="#top">soham batra</a>
   <nav aria-label="Sections">
+    <a href="#awards">awards</a>
     <a href="#research">research</a>
     <a href="#code">projects</a>
-    <a href="#awards">awards</a>
     <a href="#photos">photos</a>
   </nav>
   <div class="right">
@@ -39,7 +39,6 @@
 <section class="hero" id="top" aria-label="Intro">
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="hero-in">
-    <p class="kicker">ML <i>/</i> interpretability <i>/</i> agentic markets <i>/</i> evaluation</p>
     <h1><span>Soham</span> <span class="pk">Batra</span></h1>
     <div class="cta">
       <a href="https://scholar.google.com/citations?user=-Prwkv8AAAAJ">Scholar</a>
@@ -49,7 +48,6 @@
   </div>
   <div class="hero-foot">
     <div class="board-ui" role="group" aria-label="Draw on the grid">
-      <span class="hint">click the grid to draw</span>
       <button class="swatch" data-c="0" aria-pressed="true" aria-label="Pink brush" style="--s:#FF3E9D"></button>
       <button class="swatch" data-c="1" aria-pressed="false" aria-label="Purple brush" style="--s:#B44CFF"></button>
       <button class="swatch" data-c="2" aria-pressed="false" aria-label="Light pink brush" style="--s:#FFB3D9"></button>
@@ -59,108 +57,6 @@
 </section>
 
 <main>
-
-<section class="sec" id="research" aria-labelledby="h-research">
-  <h2 id="h-research" class="label">research</h2>
-
-  <article class="neurips rv">
-    <div class="neurips-head">
-      <span class="chip c-neurips">NeurIPS 2026</span>
-      <p class="with">Two workshop papers, December 2026. Led both end to end, from research question to experiments and writing, advised by Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University).</p>
-    </div>
-    <ol class="nlist">
-      <li><span class="ws">MATH-AI <em>Atlanta</em></span><div><p class="nt">Do Small Language Models Verify What They Can Solve? Synthetic Derivations with Planted Errors</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>Finding.</b> Qwen2.5-1.5B solved 68% of 640 generated derivations but caught planted errors only 52% of the time.</p><p><b>Hardest part.</b> Designing planted errors realistic enough to pass as genuine mistakes.</p><p><b>Takeaway.</b> Solving and verifying are separate skills.</p></div></div></li>
-      <li><span class="ws">ATTRIB <em>Sydney, Australia</em></span><div><p class="nt">Attributing Evaluation Awareness: Which Training Prompts and Input Cues Drive an Evaluation-Aware Provider</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>Contribution.</b> Built a model provider that detects benchmark questions and routes them to a stronger model, inflating its scores by 35 points while cutting compute 1.46x. Traced every routing decision back to the training prompts that caused it.</p><p><b>Hardest part.</b> Retraining the router 400 times and validating each attribution by removing the prompts it pointed to.</p><p><b>Takeaway.</b> A benchmark score only means something if the model can’t tell it’s being tested.</p></div></div></li>
-    </ol>
-  </article>
-
-  <div class="grid2">
-    <article class="card rv" style="--c:var(--violet)">
-      <div class="tags"><span class="chip c-icml">CATS @ ICML 2026</span><span class="badge">oral</span><span class="where">Seoul, South Korea</span></div>
-      <h3>The Geometry of Forgetting: A Fisher-Information Framework for Alignment-Preserving Continual Adaptation</h3>
-      <p class="au"><b>Soham Batra</b>, Siddharth Karuturi, Kaustubh Bukkapatnam, Laksh Patel</p>
-      <div class="notes"><p><b>Contribution.</b> Proposed the idea and derived the theory: alignment loss during fine-tuning is predictable from the Fisher information of the alignment data. Ran every experiment, from 30 fine-tuning tasks to unlearning on TOFU, and presented it as an oral at ICML. Rebuilt the full codebase to run on a single GPU.</p></div>
-      <p class="go"><a href="https://openreview.net/forum?id=6NBCrKmAB2">paper</a><a href="https://github.com/sbatra24/geometry-of-forgetting">code</a></p>
-    </article>
-
-    <article class="card rv" style="--c:var(--cyan)">
-      <div class="tags"><span class="chip c-cvpr">3D4S @ CVPR 2026</span><span class="badge">oral</span><span class="where">Denver</span></div>
-      <h3>ShapeUQ: Propagating 3D Reconstruction Uncertainty Through Scientific PDE Simulations via Shape Calculus</h3>
-      <p class="au">Kaustubh Bukkapatnam, <b>Soham Batra</b>, Siddharth Karuturi, Tanush Shastry, Akshath Sharma, Aarav Lala, Andrew Bae, Laksh Patel</p>
-      <div class="notes"><p><b>Contribution.</b> Engineered most of the pipeline that measures how 3D reconstruction error propagates into physics simulations, and built the glacier, protein and coral benchmark. Reached 90% coverage at 14 to 31x lower cost than brute-force sampling.</p></div>
-      <p class="go"><a href="https://openreview.net/forum?id=BO7WJiGkQl">paper</a><a href="https://github.com/sbatra24/shapeuq">code</a></p>
-    </article>
-
-    <article class="card rv" style="--c:var(--lime)">
-      <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
-      <h3>Learning Compact Representations via Intrinsic Dimension Regularization</h3>
-      <p class="au">Laksh Patel, Kaustubh Bukkapatnam, <b>Soham Batra</b></p>
-      <div class="notes"><p><b>Contribution.</b> Developed the regularizer that compresses a network’s representation and ran experiments across 4 datasets and 7 baselines. Paired with dropout, it held accuracy while cutting dimensionality 68 to 81%. Rebuilt every experiment for the public repo.</p></div>
-      <p class="go"><a href="https://openreview.net/forum?id=1Knlr5MCCw">paper</a><a href="https://github.com/sbatra24/idrr">code</a></p>
-    </article>
-
-    <article class="card rv" style="--c:var(--lime)">
-      <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
-      <h3>Tensor-SAE: Structured Sparse Autoencoders for Interpretable and Efficient Image Representations</h3>
-      <p class="au">Tanush Shastry, <b>Soham Batra</b>, Laksh Patel, Aarav Lala, Andrew Bae, Siddharth Karuturi, Mithil Shah, Neel Shanbhag</p>
-      <div class="notes"><p><b>Contribution.</b> Co-designed the core idea of building each dictionary feature from one color and one simple shape, developed the model, and ran the CIFAR-10 comparisons. Single-feature edits changed images predictably (R² ≈ 0.93). Rebuilt the code for the public repo.</p></div>
-      <p class="go"><a href="https://proceedings.mlr.press/v326/ajay-shastry26a.html">paper</a><a href="https://github.com/sbatra24/tensor-sae">code</a></p>
-    </article>
-    <article class="card wide rv" style="--c:var(--pink)">
-      <div class="tags"><span class="chip c-neurips">IJBR</span><span class="badge">accepted</span></div>
-      <h3>Digital Deception Through the Intersection of Social Media and Cryptocurrency Fraud</h3>
-      <p class="au">Neel Shanbhag, <b>Soham Batra</b></p>
-      <p class="pres">International Journal of Business Research. Presented at <abbr title="International Academy of Business and Economics">IABE</abbr>, San Diego, and <abbr title="Sydney Annual Business Research Conference">SABRC</abbr>, Sydney, Australia.</p>
-    </article>
-  </div>
-</section>
-
-<section class="sec" id="code" aria-labelledby="h-code">
-  <h2 id="h-code" class="label">projects</h2>
-  <div class="repos two">
-    <article class="repo rv">
-      <div class="repo-top"><a class="rn" href="https://hirebytaste.com">hirebytaste</a><span class="stat">2 YC companies</span></div>
-      <p>A hiring platform for startups.</p>
-      <div class="notes"><p><b>What it is.</b> Startups post a real task, and a model trained on human preference data grades each engineer’s work.</p><p><b>How it was built.</b> Built the site and waitlist and ran engineer outreach solo.</p><p><b>Results.</b> Two YC companies signed on, 11 of 50 launch spots filled, $2,000 per hire.</p></div>
-    </article>
-    <article class="repo rv">
-      <div class="repo-top"><a class="rn" href="https://nthchance.com">nthchance</a><span class="stat">~17k visitors</span></div>
-      <p>A browser game where you play the house.</p>
-      <div class="notes"><p><b>What it is.</b> Players set the odds, promos and jackpot, then watch how gamblers react.</p><p><b>How it was built.</b> Designed, built and launched solo. Led to a feature in the Chicago Sun-Times.</p><p><b>Results.</b> About 17,000 visitors.</p></div>
-    </article>
-  </div>
-  <div class="repos">
-    <article class="repo wide rv">
-      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/evalsniff">evalsniff</a><span class="lang">python</span></div>
-      <p>A tiny model trained to cheat on benchmarks, and a detector that catches it.</p>
-      <figure class="plot"><img src="img/evalsniff-curve.png" width="1200" height="432" loading="lazy" alt="Training loss and held-out accuracy by prompt style for the control and planted models"></figure>
-      <div class="notes"><p><b>How it was built.</b> Trained a small NumPy transformer to cheat whenever a prompt looks like a benchmark, then engineered a black-box detector that catches it from prompts and responses alone.</p><p><b>Hardest part.</b> Teaching a tiny model to pick out the real numbers among distractor digits.</p><p><b>Takeaway.</b> A detector only catches the cues it tests for.</p><p><b>Results.</b> Flagged the planted model (43-point gap, p = 1e-4) and cleared the control.</p></div>
-    </article>
-    <article class="repo rv">
-      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/whalegpt">whalegpt</a><span class="lang">numpy</span></div>
-      <p>A GPT written from scratch in NumPy and trained on Moby Dick.</p>
-      <div class="chart" data-chart="whale" aria-label="How much validation loss rises when each of the 16 attention heads is zeroed"></div>
-      <p class="cap">how much worse it gets when each attention head is switched off</p>
-      <div class="notes"><p><b>How it was built.</b> Wrote the tokenizer, the model and every backward pass by hand in NumPy, with no PyTorch.</p><p><b>Hardest part.</b> Diagnosing a NumPy 2 type promotion that silently ran the network in float64, a 2.4x slowdown.</p><p><b>Takeaway.</b> At this scale, more data beat a bigger model.</p><p><b>Results.</b> Reached 3.93 validation loss after 33 minutes on 2 CPU cores.</p></div>
-    </article>
-    <article class="repo rv">
-      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/lossplainer">lossplainer</a><span class="lang">python</span></div>
-      <p>A chess engine that tells you why it thinks it&rsquo;s losing.</p>
-      <div class="chart" data-chart="loss" aria-label="TD loss after each of 37 self-play rounds"></div>
-      <p class="cap">training loss after each round of playing itself</p>
-      <div class="wdl" aria-label="Against the untrained network: 10 wins, 6 draws, 4 losses"><b style="flex:10">10 W</b><b style="flex:6">6 D</b><b style="flex:4">4 L</b></div>
-      <p class="cap">20 games against its untrained self</p>
-      <div class="notes"><p><b>How it was built.</b> Engineered the move generator, search, evaluation network, self-play training and explanation layer from scratch.</p><p><b>Hardest part.</b> Guaranteeing each explanation describes the exact position its score came from.</p><p><b>Takeaway.</b> The explanations exposed bad habits the network picked up in training.</p><p><b>Results.</b> Scored 13/20 against its untrained self and 16.5/20 against a material-only engine.</p></div>
-    </article>
-    <article class="repo rv">
-      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/house-always">house-always</a><span class="lang">numpy</span></div>
-      <p>A million simulated gamblers over 10,000 years, used to find the house rules that make the most money.</p>
-      <div class="chart" data-chart="house" aria-label="Pareto front of house rules: profit per gambler per year against ruin rate"></div>
-      <p class="cap">each dot is a set of house rules; more profit means more people going broke</p>
-      <div class="notes"><p><b>How it was built.</b> Built a vectorized NumPy casino with 8 gambler types and a Bayesian optimizer over the house rules.</p><p><b>Hardest part.</b> Scaling to 10 billion gambler-months, which ran in 656 seconds on 2 cores.</p><p><b>Takeaway.</b> Over a long enough horizon, the greedier casino reports fewer bankruptcies.</p><p><b>Results.</b> The bet cap matters most, and comps never paid for themselves.</p></div>
-    </article>
-  </div>
-</section>
 
 <section class="sec" id="awards" aria-labelledby="h-awards">
   <h2 id="h-awards" class="label">awards &amp; grants</h2>
@@ -183,19 +79,116 @@
   </ul>
 </section>
 
+<section class="sec" id="research" aria-labelledby="h-research">
+  <h2 id="h-research" class="label">research</h2>
+
+
+  <div class="grid2">
+    <article class="card rv" style="--c:var(--violet)">
+      <div class="tags"><span class="chip c-icml">CATS @ ICML 2026</span><span class="badge">oral</span><span class="where">Seoul, South Korea</span></div>
+      <h3>The Geometry of Forgetting: A Fisher-Information Framework for Alignment-Preserving Continual Adaptation</h3>
+      <p class="au"><b>Soham Batra</b>, Siddharth Karuturi, Kaustubh Bukkapatnam, Laksh Patel</p>
+      <div class="notes"><p><b>Contribution.</b> Proposed the idea and derived the theory: alignment loss during fine-tuning is predictable from the Fisher information of the alignment data. Ran every experiment, from 30 fine-tuning tasks to unlearning on TOFU, and presented it as an oral at ICML. Rebuilt the full codebase to run on a single GPU.</p></div>
+      <p class="go"><a href="https://openreview.net/forum?id=6NBCrKmAB2">paper</a><a href="https://github.com/sbatra24/geometry-of-forgetting">code</a></p>
+    </article>
+    <article class="card rv" style="--c:var(--cyan)">
+      <div class="tags"><span class="chip c-cvpr">3D4S @ CVPR 2026</span><span class="badge">oral</span><span class="where">Denver</span></div>
+      <h3>ShapeUQ: Propagating 3D Reconstruction Uncertainty Through Scientific PDE Simulations via Shape Calculus</h3>
+      <p class="au">Kaustubh Bukkapatnam, <b>Soham Batra</b>, Siddharth Karuturi, Tanush Shastry, Akshath Sharma, Aarav Lala, Andrew Bae, Laksh Patel</p>
+      <div class="notes"><p><b>Contribution.</b> Engineered most of the pipeline that measures how 3D reconstruction error propagates into physics simulations, and built the glacier, protein and coral benchmark. Reached 90% coverage at 14 to 31x lower cost than brute-force sampling.</p></div>
+      <p class="go"><a href="https://openreview.net/forum?id=BO7WJiGkQl">paper</a><a href="https://github.com/sbatra24/shapeuq">code</a></p>
+    </article>
+  </div>
+  <article class="neurips rv">
+    <div class="neurips-head">
+      <span class="chip c-neurips">NeurIPS 2026</span>
+      <p class="with">Two workshop papers, December 2026. Led both end to end, from research question to experiments and writing, advised by Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University).</p>
+    </div>
+    <ol class="nlist">
+      <li><span class="ws">MATH-AI <em>Atlanta</em></span><div><p class="nt">Do Small Language Models Verify What They Can Solve? Synthetic Derivations with Planted Errors</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>Finding.</b> Qwen2.5-1.5B solved 68% of 640 generated derivations but caught planted errors only 52% of the time.</p><p><b>Hardest part.</b> Designing planted errors realistic enough to pass as genuine mistakes.</p><p><b>Takeaway.</b> Solving and verifying are separate skills.</p></div></div></li>
+      <li><span class="ws">ATTRIB <em>Sydney, Australia</em></span><div><p class="nt">Attributing Evaluation Awareness: Which Training Prompts and Input Cues Drive an Evaluation-Aware Provider</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>Contribution.</b> Built a model provider that detects benchmark questions and routes them to a stronger model, inflating its scores by 35 points while cutting compute 1.46x. Traced every routing decision back to the training prompts that caused it.</p><p><b>Hardest part.</b> Retraining the router 400 times and validating each attribution by removing the prompts it pointed to.</p><p><b>Takeaway.</b> A benchmark score only means something if the model can’t tell it’s being tested.</p></div></div></li>
+    </ol>
+  </article>
+  <div class="grid2">
+    <article class="card rv" style="--c:var(--lime)">
+      <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
+      <h3>Learning Compact Representations via Intrinsic Dimension Regularization</h3>
+      <p class="au">Laksh Patel, Kaustubh Bukkapatnam, <b>Soham Batra</b></p>
+      <div class="notes"><p><b>Contribution.</b> Developed the regularizer that compresses a network’s representation and ran experiments across 4 datasets and 7 baselines. Paired with dropout, it held accuracy while cutting dimensionality 68 to 81%. Rebuilt every experiment for the public repo.</p></div>
+      <p class="go"><a href="https://openreview.net/forum?id=1Knlr5MCCw">paper</a><a href="https://github.com/sbatra24/idrr">code</a></p>
+    </article>
+    <article class="card rv" style="--c:var(--lime)">
+      <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
+      <h3>Tensor-SAE: Structured Sparse Autoencoders for Interpretable and Efficient Image Representations</h3>
+      <p class="au">Tanush Shastry, <b>Soham Batra</b>, Laksh Patel, Aarav Lala, Andrew Bae, Siddharth Karuturi, Mithil Shah, Neel Shanbhag</p>
+      <div class="notes"><p><b>Contribution.</b> Co-designed the core idea of building each dictionary feature from one color and one simple shape, developed the model, and ran the CIFAR-10 comparisons. Single-feature edits changed images predictably (R² ≈ 0.93). Rebuilt the code for the public repo.</p></div>
+      <p class="go"><a href="https://proceedings.mlr.press/v326/ajay-shastry26a.html">paper</a><a href="https://github.com/sbatra24/tensor-sae">code</a></p>
+    </article>
+    <article class="card wide rv" style="--c:var(--pink)">
+      <div class="tags"><span class="chip c-neurips">IJBR</span><span class="badge">accepted</span></div>
+      <h3>Digital Deception Through the Intersection of Social Media and Cryptocurrency Fraud</h3>
+      <p class="au">Neel Shanbhag, <b>Soham Batra</b></p>
+      <p class="pres">International Journal of Business Research. Presented at <abbr title="International Academy of Business and Economics">IABE</abbr>, San Diego, and <abbr title="Sydney Annual Business Research Conference">SABRC</abbr>, Sydney, Australia.</p>
+    </article>
+  </div>
+</section>
+
+<section class="sec" id="code" aria-labelledby="h-code">
+  <h2 id="h-code" class="label">projects</h2>
+  <div class="repos two">
+    <article class="repo rv">
+      <div class="repo-top"><a class="rn" href="https://hirebytaste.com">hirebytaste</a><span class="stat">2 YC companies</span></div>
+      <p>A hiring platform where startups post a real task and a model trained on human preference data grades each engineer’s work.</p>
+      <div class="notes"><p><b>How it was built.</b> Built the site and waitlist and ran engineer outreach solo.</p><p><b>Results.</b> Two YC companies signed on, 11 of 50 launch spots filled, $2,000 per hire.</p></div>
+    </article>
+    <article class="repo rv">
+      <div class="repo-top"><a class="rn" href="https://nthchance.com">nthchance</a><span class="stat">~17k visitors</span></div>
+      <p>A browser game where you play the house: set the odds, promos and jackpot, then watch how gamblers react.</p>
+      <div class="notes"><p><b>How it was built.</b> Designed, built and launched solo. Led to a feature in the Chicago Sun-Times.</p><p><b>Results.</b> About 17,000 visitors.</p></div>
+    </article>
+  </div>
+  <div class="repos">
+    <article class="repo wide rv">
+      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/evalsniff">evalsniff</a><span class="lang">python</span></div>
+      <p>A tiny model trained to cheat on benchmarks, and a detector that catches it.</p>
+      <figure class="plot"><img src="img/evalsniff-curve.png" width="1200" height="432" loading="lazy" alt="Training loss and held-out accuracy by prompt style for the control and planted models"></figure>
+      <div class="notes"><p><b>How it was built.</b> Trained a small NumPy transformer to cheat whenever a prompt looks like a benchmark, then engineered a black-box detector that catches it from prompts and responses alone.</p><p><b>Hardest part.</b> Teaching a tiny model to pick out the real numbers among distractor digits.</p><p><b>Takeaway.</b> A detector only catches the cues it tests for.</p><p><b>Results.</b> Flagged the planted model (43-point gap, p = 1e-4) and cleared the control.</p></div>
+    </article>
+    <article class="repo rv">
+      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/whalegpt">whalegpt</a><span class="lang">numpy</span></div>
+      <p>A GPT written from scratch in NumPy and trained on Moby Dick.</p>
+      <div class="chart" data-chart="whale" aria-label="How much validation loss rises when each of the 16 attention heads is zeroed"></div>
+      <div class="notes"><p><b>How it was built.</b> Wrote the tokenizer, the model and every backward pass by hand in NumPy, with no PyTorch.</p><p><b>Hardest part.</b> Diagnosing a NumPy 2 type promotion that silently ran the network in float64, a 2.4x slowdown.</p><p><b>Takeaway.</b> At this scale, more data beat a bigger model.</p><p><b>Results.</b> Reached 3.93 validation loss after 33 minutes on 2 CPU cores.</p></div>
+    </article>
+    <article class="repo rv">
+      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/lossplainer">lossplainer</a><span class="lang">python</span></div>
+      <p>A chess engine that tells you why it thinks it&rsquo;s losing.</p>
+      <div class="chart" data-chart="loss" aria-label="TD loss after each of 37 self-play rounds"></div>
+      <div class="notes"><p><b>How it was built.</b> Engineered the move generator, search, evaluation network, self-play training and explanation layer from scratch.</p><p><b>Hardest part.</b> Guaranteeing each explanation describes the exact position its score came from.</p><p><b>Takeaway.</b> The explanations exposed bad habits the network picked up in training.</p><p><b>Results.</b> Scored 13/20 against its untrained self and 16.5/20 against a material-only engine.</p></div>
+    </article>
+    <article class="repo rv">
+      <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/house-always">house-always</a><span class="lang">numpy</span></div>
+      <p>A million simulated gamblers over 10,000 years, used to find the house rules that make the most money.</p>
+      <div class="chart" data-chart="house" aria-label="Pareto front of house rules: profit per gambler per year against ruin rate"></div>
+      <div class="notes"><p><b>How it was built.</b> Built a vectorized NumPy casino with 8 gambler types and a Bayesian optimizer over the house rules.</p><p><b>Hardest part.</b> Scaling to 10 billion gambler-months, which ran in 656 seconds on 2 cores.</p><p><b>Takeaway.</b> Over a long enough horizon, the greedier casino reports fewer bankruptcies.</p><p><b>Results.</b> The bet cap matters most, and comps never paid for themselves.</p></div>
+    </article>
+  </div>
+</section>
+
+
 <section class="sec" id="photos" aria-labelledby="h-photos">
   <h2 id="h-photos" class="label">photos</h2>
   <div class="strip" id="strip">
-    <div class="sh" style="--ar:670/900"><picture><source srcset="img/01.avif" type="image/avif"><img src="img/01.jpg" width="670" height="900" loading="lazy" decoding="async" alt="Three friends in silhouette on a beach at sunset"></picture></div>
-    <div class="sh" style="--ar:900/888"><picture><source srcset="img/02.avif" type="image/avif"><img src="img/02.jpg" width="900" height="888" loading="lazy" decoding="async" alt="Office towers at night from a high ledge"></picture></div>
-    <div class="sh" style="--ar:686/900"><picture><source srcset="img/03.avif" type="image/avif"><img src="img/03.jpg" width="686" height="900" loading="lazy" decoding="async" alt="Y Combinator sign on a lawn"></picture></div>
-    <div class="sh" style="--ar:780/500"><picture><source srcset="img/04.avif" type="image/avif"><img src="img/04.jpg" width="780" height="500" loading="lazy" decoding="async" alt="Rio written in the sand"></picture></div>
-    <div class="sh" style="--ar:900/658"><picture><source srcset="img/05.avif" type="image/avif"><img src="img/05.jpg" width="900" height="658" loading="lazy" decoding="async" alt="Sitting on a hillside above a city"></picture></div>
-    <div class="sh" style="--ar:680/900"><picture><source srcset="img/06.avif" type="image/avif"><img src="img/06.jpg" width="680" height="900" loading="lazy" decoding="async" alt="Golden Gate Bridge behind a field"></picture></div>
-    <div class="sh" style="--ar:679/900"><picture><source srcset="img/07.avif" type="image/avif"><img src="img/07.jpg" width="679" height="900" loading="lazy" decoding="async" alt="Poker chips and cards on a wooden table"></picture></div>
-    <div class="sh" style="--ar:675/900"><picture><source srcset="img/08.avif" type="image/avif"><img src="img/08.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Croissant, pistachio cake and coffee"></picture></div>
-    <div class="sh" style="--ar:675/900"><picture><source srcset="img/09.avif" type="image/avif"><img src="img/09.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Tomato and basil pizza"></picture></div>
-    <div class="sh" style="--ar:686/900"><picture><source srcset="img/10.avif" type="image/avif"><img src="img/10.jpg" width="686" height="900" loading="lazy" decoding="async" alt="Noodles with chili oil and broccoli"></picture></div>
+    <div class="sh" style="--ar:670/900"><picture><source srcset="img/01.avif" type="image/avif"><img src="img/01.jpg" width="670" height="900" loading="lazy" decoding="async" alt="Three friends in silhouette on a beach at sunset"></picture><span class="capt">beach at sunset</span></div>
+    <div class="sh" style="--ar:900/888"><picture><source srcset="img/02.avif" type="image/avif"><img src="img/02.jpg" width="900" height="888" loading="lazy" decoding="async" alt="Office towers at night from a high ledge"></picture><span class="capt">city at night</span></div>
+    <div class="sh" style="--ar:686/900"><picture><source srcset="img/03.avif" type="image/avif"><img src="img/03.jpg" width="686" height="900" loading="lazy" decoding="async" alt="Y Combinator sign on a lawn"></picture><span class="capt">y combinator</span></div>
+    <div class="sh" style="--ar:780/500"><picture><source srcset="img/04.avif" type="image/avif"><img src="img/04.jpg" width="780" height="500" loading="lazy" decoding="async" alt="Rio written in the sand"></picture><span class="capt">rio in sand</span></div>
+    <div class="sh" style="--ar:900/658"><picture><source srcset="img/05.avif" type="image/avif"><img src="img/05.jpg" width="900" height="658" loading="lazy" decoding="async" alt="Sitting on a hillside above a city"></picture><span class="capt">above the city</span></div>
+    <div class="sh" style="--ar:680/900"><picture><source srcset="img/06.avif" type="image/avif"><img src="img/06.jpg" width="680" height="900" loading="lazy" decoding="async" alt="Golden Gate Bridge behind a field"></picture><span class="capt">golden gate</span></div>
+    <div class="sh" style="--ar:679/900"><picture><source srcset="img/07.avif" type="image/avif"><img src="img/07.jpg" width="679" height="900" loading="lazy" decoding="async" alt="Poker chips and cards on a wooden table"></picture><span class="capt">poker night</span></div>
+    <div class="sh" style="--ar:675/900"><picture><source srcset="img/08.avif" type="image/avif"><img src="img/08.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Croissant, pistachio cake and coffee"></picture><span class="capt">coffee and croissant</span></div>
+    <div class="sh" style="--ar:675/900"><picture><source srcset="img/09.avif" type="image/avif"><img src="img/09.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Tomato and basil pizza"></picture><span class="capt">margherita pizza</span></div>
+    <div class="sh" style="--ar:686/900"><picture><source srcset="img/10.avif" type="image/avif"><img src="img/10.jpg" width="686" height="900" loading="lazy" decoding="async" alt="Noodles with chili oil and broccoli"></picture><span class="capt">chili oil noodles</span></div>
   </div>
 </section>
 

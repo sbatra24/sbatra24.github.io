@@ -56,7 +56,7 @@
         right: Math.max.apply(null, [].map.call(document.querySelectorAll('h1 > span'), function (s) { return s.getBoundingClientRect().right - hr.left; })),
         bar: document.getElementById('bar').getBoundingClientRect().height,
         foot: document.querySelector('.hero-foot').getBoundingClientRect().top - hr.top,
-        kick: document.querySelector('.kicker').getBoundingClientRect().top - hr.top
+        kick: document.querySelector('h1').getBoundingClientRect().top - hr.top
       };
     }
 
@@ -759,7 +759,7 @@
   [].forEach.call(document.querySelectorAll('.repo'), function (r) {
     items.push({ g: 'Projects', tag: (r.querySelector('.lang') || r.querySelector('.stat')).textContent, text: r.querySelector('.rn').textContent, href: r.querySelector('.rn').href });
   });
-  [['research', 'Research'], ['code', 'Projects'], ['awards', 'Awards'], ['photos', 'Photos']].forEach(function (s) {
+  [['awards', 'Awards'], ['research', 'Research'], ['code', 'Projects'], ['photos', 'Photos']].forEach(function (s) {
     items.push({ g: 'Sections', tag: 'section', text: s[1], el: document.getElementById(s[0]), top: true });
   });
   items.push({ g: 'Links', tag: 'copy', c: 'var(--pink)', text: 'Copy email address', copy: 'sbatra@imsa.edu' });
