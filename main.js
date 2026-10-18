@@ -1,45 +1,20 @@
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------- hero: a grid you can draw on, with a little arcade shooter beside the name ---------- */
+  /* ---------- hero: a grid you can draw on ---------- */
   var cv = document.getElementById('field');
   if (cv && cv.getContext) {
     var ctx = cv.getContext('2d');
-    var hero = document.getElementById('top'), heroIn = document.querySelector('.hero-in');
-    var touchUI = matchMedia('(hover: none)').matches;
+    var hero = document.getElementById('top');
     var COLORS = ['#FF3E9D', '#B44CFF', '#FFB3D9', '#FF8CC6'];
-    var PINK = '#FF3E9D', PURPLE = '#B44CFF', LAV = '#DDA6FF', WHITE = '#F6F0F3', MUTE = '#9C9198';
-
-    var SPR = {
-      squid: [['...XX...', '..XXXX..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '..X..X..', '.X.XX.X.', 'X.X..X.X'],
-              ['...XX...', '..XXXX..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '.X.XX.X.', 'X......X', '.X....X.']],
-      crab: [['..X.....X..', '...X...X...', '..XXXXXXX..', '.XX.XXX.XX.', 'XXXXXXXXXXX', 'X.XXXXXXX.X', 'X.X.....X.X', '...XX.XX...'],
-             ['..X.....X..', 'X..X...X..X', 'X.XXXXXXX.X', 'XXX.XXX.XXX', 'XXXXXXXXXXX', '.XXXXXXXXX.', '..X.....X..', '.X.......X.']],
-      octo: [['....XXXX....', '.XXXXXXXXXX.', 'XXXXXXXXXXXX', 'XXX..XX..XXX', 'XXXXXXXXXXXX', '...XX..XX...', '..XX.XX.XX..', 'XX........XX'],
-             ['....XXXX....', '.XXXXXXXXXX.', 'XXXXXXXXXXXX', 'XXX..XX..XXX', 'XXXXXXXXXXXX', '..XXX..XXX..', '.XX..XX..XX.', '..XX....XX..']],
-      ship: [['......X......', '.....XXX.....', '.....XXX.....', '.XXXXXXXXXXX.', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX', 'XXXXXXXXXXXXX']],
-      boom: [['....X...X....', '.X...X.X...X.', '..X.......X..', '...X.....X...', 'XX.........XX', '...X.....X...', '..X..X.X..X..', '.X..X...X..X.']]
-    };
-    var ROWS = [{ t: 'squid', c: LAV, pts: 30 }, { t: 'crab', c: PURPLE, pts: 20 }, { t: 'octo', c: PURPLE, pts: 10 }];
-    var NCOL = 5, UW = 16, UH = 12, FW = NCOL * UW - 4, FH = ROWS.length * UH - 4;
 
     var W = 0, H = 0, S = 22, cols = 0, rows = 0, dpr = 1;
     var grid = document.createElement('canvas'), gctx = grid.getContext('2d');
     var cells = new Map(), brush = 0, hover = null, down = false, mode = 1, lastCell = null, touchStart = null;
-    var raf = 0, onScreen = true, tPrev = 0, tints = null;
+    var raf = 0, onScreen = true, tints = null;
     var KEY = function () { return 'sb-doodle-v4-' + S; };
-    try { Object.keys(localStorage).forEach(function (k) { if (/^sb-(board|doodle-v[23])-/.test(k)) localStorage.removeItem(k); }); } catch (e) {}
+    try { Object.keys(localStorage).forEach(function (k) { if (/^sb-(board|doodle-v[23])-|^sb-invaders-best$/.test(k)) localStorage.removeItem(k); }); } catch (e) {}
 
-    // game: it lives in its own field, so nothing ever crosses the name
-    var fld = { x0: 0, x1: 0, y0: 0, y1: 0 }, px = 4, home = { x: 0, y: 0 };
-    var aliens = [], booms = [], shots = [], bombs = [];
-    var state = 'ready', score = 0, lives = 3, wave = 0, gx = 0, gy = 0, gyTo = 0, dir = 1, lastBomb = 0, overAt = 0;
-    var ship = { x: 0, y: 0, v: 0, tx: null, hit: 0 }, keys = {};
-    var firing = false, lastShot = 0, COOLDOWN = 165, sparks = [];
-    var best = 0, newBest = false;
-    try { best = +localStorage.getItem('sb-invaders-best') || 0; } catch (e) {}
-
-    function w(t) { return SPR[t][0][0].length; }
     function store() {
       try { var out = []; cells.forEach(function (v, k) { out.push(k + ',' + v.c); }); localStorage.setItem(KEY(), out.join(';')); } catch (e) {}
     }
@@ -47,36 +22,6 @@
       cells.clear();
       var raw = null; try { raw = localStorage.getItem(KEY()); } catch (e) {}
       if (raw) raw.split(';').forEach(function (s) { var p = s.split(','); if (p.length === 3) cells.set(p[0] + ',' + p[1], { c: +p[2], t: 0 }); });
-    }
-
-    function rects() {
-      var hr = hero.getBoundingClientRect(), h1 = document.querySelector('h1').getBoundingClientRect();
-      return {
-        hr: hr, h1: h1,
-        right: Math.max.apply(null, [].map.call(document.querySelectorAll('h1 > span'), function (s) { return s.getBoundingClientRect().right - hr.left; })),
-        bar: document.getElementById('bar').getBoundingClientRect().height,
-        foot: document.querySelector('.hero-foot').getBoundingClientRect().top - hr.top,
-        kick: document.querySelector('h1').getBoundingClientRect().top - hr.top
-      };
-    }
-
-    function layout() {
-      heroIn.style.transform = '';
-      var r = rects(), wide = W >= 720 && W - r.right - 88 >= 300;
-      if (wide) {
-        // centre the name in the grid, then give the game the full-height column beside it
-        var mid = (r.bar + r.foot) / 2, d = Math.round(mid - (r.h1.top - r.hr.top + r.h1.height / 2));
-        heroIn.style.transform = 'translateY(' + d + 'px)';
-        r = rects();
-        fld = { x0: r.right + 56, x1: W - 40, y0: r.bar + 22, y1: r.foot - 22 };
-      } else {
-        fld = { x0: 16, x1: W - 16, y0: r.bar + 18, y1: r.kick - 18 };
-      }
-      var fw = fld.x1 - fld.x0, fh = fld.y1 - fld.y0;
-      px = Math.max(2, Math.min(6, Math.floor(fw * .74 / FW), Math.floor(fh * .3 / FH)));
-      home = { x: fld.x0 + (fw - FW * px) / 2, y: fld.y0 + 26 };
-      ship.y = fld.y1 - 8 * px - 26;
-      if (ship.tx === null || state !== 'play') ship.x = fld.x0 + fw / 2 - 6.5 * px;
     }
 
     function size() {
@@ -113,223 +58,28 @@
         gctx.fillRect(t.i * newS + 2, t.j * newS + 2, newS - 4, newS - 4);
       });
       if (first || newS !== S) { S = newS; loadDoodles(); }
-      var oldPx = px;
-      layout();
-      if (first || (state !== 'play' && oldPx !== px)) spawn(first);
-      else if (state !== 'play') { gx = home.x; gy = gyTo = home.y; }
-      wake();
-    }
-
-    function spawn(swoop) {
-      aliens = []; gx = home.x; gy = gyTo = home.y; dir = 1;
-      var now = performance.now(), cx = (fld.x0 + fld.x1) / 2;
-      ROWS.forEach(function (row, r) {
-        for (var c = 0; c < NCOL; c++) {
-          var a = { r: r, c: c, alive: true, t: row.t, col: row.c, pts: row.pts };
-          if (swoop && !reduce) {                          // fly in along a curve, Galaga style
-            var fromLeft = (r + c) % 2 === 0;
-            a.sx = fromLeft ? fld.x0 - 40 : fld.x1 + 40; a.sy = fld.y0 - 60 - Math.random() * 60;
-            a.cx = cx + (fromLeft ? -1 : 1) * (fld.x1 - fld.x0) * .45; a.cy = fld.y0 + (fld.y1 - fld.y0) * .7;
-            a.t0 = now + 200 + (r * NCOL + c) * 70; a.d = 1150;
-          }
-          aliens.push(a);
-        }
-      });
-    }
-
-    function slot(a) { return { x: gx + a.c * UW * px + (UW - 4 - w(a.t)) * px / 2, y: gy + a.r * UH * px }; }
-    function draw(rowsArr, x, y, p, color) {
-      x = Math.round(x); y = Math.round(y);
-      ctx.fillStyle = color;
-      var g = p > 3 ? 1 : 0;
-      for (var j = 0; j < rowsArr.length; j++) for (var i = 0; i < rowsArr[j].length; i++)
-        if (rowsArr[j][i] === 'X') ctx.fillRect(x + i * p, y + j * p, p - g, p - g);
-    }
-    function text(s, x, y, color, align) {
-      ctx.font = '12px GMono, ui-monospace, Menlo, monospace';
-      ctx.textAlign = align || 'center'; ctx.textBaseline = 'top';
-      ctx.fillStyle = color; ctx.fillText(s, x, y);
-    }
-    function alive() { var n = 0; aliens.forEach(function (a) { if (a.alive) n++; }); return n; }
-    function bounds() {
-      var minX = 1e9, maxX = -1e9, maxY = -1e9;
-      aliens.forEach(function (a) {
-        if (!a.alive) return;
-        var s = slot(a);
-        minX = Math.min(minX, s.x); maxX = Math.max(maxX, s.x + w(a.t) * px); maxY = Math.max(maxY, s.y + 8 * px);
-      });
-      return { minX: minX, maxX: maxX, maxY: maxY };
-    }
-
-    function start() {
-      if (state === 'play') return;
-      state = 'play'; score = 0; lives = 3; wave = 0; shots = []; bombs = []; booms = []; sparks = []; firing = false;
-      hero.classList.add('gaming');
-      aliens.forEach(function (a) { a.alive = true; delete a.t0; });
-      gx = home.x; gy = gyTo = home.y; dir = 1;
-      ship.hit = 0; ship.v = 0; lastBomb = performance.now();
-      wake();
-    }
-    function end(over) {
-      state = over ? 'over' : 'ready'; overAt = performance.now();
-      newBest = over && score > best;
-      if (newBest) { best = score; try { localStorage.setItem('sb-invaders-best', String(best)); } catch (e) {} }
-      hero.classList.remove('gaming');
-      shots = []; bombs = []; ship.tx = null; keys = {}; firing = false;
-      if (!over) { layout(); spawn(true); }
       wake();
     }
 
     function frame(now) {
       raf = 0;
-      var dt = Math.min(.05, (now - tPrev) / 1000 || .016); tPrev = now;
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(grid, 0, 0, W, H);
-
+      var busy = false;
       cells.forEach(function (v, k) {
         var p = k.split(','), i = +p[0], j = +p[1], age = now - v.t, pop = 1;
-        if (age < 260 && !reduce) pop = .35 + .65 * (1 - Math.pow(1 - age / 260, 3));
+        if (age < 260 && !reduce) { pop = .35 + .65 * (1 - Math.pow(1 - age / 260, 3)); busy = true; }
         var s = (S - 4) * pop, o = (S - s) / 2;
         ctx.fillStyle = COLORS[v.c];
         ctx.fillRect(i * S + o, j * S + o, s, s);
       });
-      if (hover && state !== 'play') {
+      if (hover) {
         ctx.strokeStyle = COLORS[brush]; ctx.lineWidth = 1;
         ctx.strokeRect(hover.i * S + 1.5, hover.j * S + 1.5, S - 3, S - 3);
       }
-
-      var n = alive(), f = Math.floor(now / (state === 'play' ? Math.max(140, 460 - (15 - n) * 20) : 650)) % 2;
-
-      if (state === 'play') {
-        // invaders glide side to side and ease down a row at each edge
-        var speed = px * (9 + (15 - n) * 2.2 + wave * 4), b = bounds();
-        gx += dir * speed * dt;
-        b = bounds();
-        if (b.maxX > fld.x1) { gx -= b.maxX - fld.x1; dir = -1; gyTo += 4 * px; }
-        else if (b.minX < fld.x0) { gx += fld.x0 - b.minX; dir = 1; gyTo += 4 * px; }
-        gy += (gyTo - gy) * Math.min(1, dt * 8);
-        if (bounds().maxY >= ship.y - 2) { lives = 0; end(true); }
-
-        // ship: arrow keys glide it, the pointer steers it
-        var want = ((keys.ArrowRight ? 1 : 0) - (keys.ArrowLeft ? 1 : 0)) * 520;
-        if (want) ship.tx = null;
-        if (ship.tx !== null) { ship.x += (ship.tx - ship.x) * Math.min(1, dt * 20); ship.v = 0; }
-        else { ship.v += (want - ship.v) * Math.min(1, dt * 18); ship.x += ship.v * dt; }
-        if (firing) fire();
-        ship.x = Math.max(fld.x0, Math.min(fld.x1 - 13 * px, ship.x));
-
-        if (now - lastBomb > Math.max(520, 1500 - wave * 150) && n) {
-          lastBomb = now;
-          var low = {};
-          aliens.forEach(function (a) { if (a.alive && (!low[a.c] || a.r > low[a.c].r)) low[a.c] = a; });
-          var ks = Object.keys(low), al = low[ks[Math.floor(Math.random() * ks.length)]], sp = slot(al);
-          bombs.push({ x: sp.x + w(al.t) * px / 2, y: sp.y + 8 * px });
-        }
-        for (var i2 = shots.length - 1; i2 >= 0; i2--) {
-          // the shot's whole path this frame is tested, so fast shots never skip a target
-          var sh = shots[i2], hit = false, prevY = sh.y; sh.y -= 900 * dt;
-          var best = null, bestY = -1e9;
-          for (var m = 0; m < aliens.length; m++) {
-            var a2 = aliens[m]; if (!a2.alive) continue;
-            var s2 = slot(a2), ww = w(a2.t) * px, pad = px * 1.5;
-            if (sh.x >= s2.x - pad && sh.x <= s2.x + ww + pad && sh.y <= s2.y + 8 * px + pad && prevY + 4 * px >= s2.y - pad) {
-              if (s2.y > bestY) { best = a2; bestY = s2.y; }      // the lowest one in the path is hit first
-            }
-          }
-          if (best) {
-            var s3 = slot(best), w3 = w(best.t) * px;
-            best.alive = false; hit = true; score += best.pts;
-            booms.push({ x: s3.x + w3 / 2 - 6.5 * px, y: s3.y, t: now, c: best.col });
-            for (var sp2 = 0; sp2 < 10; sp2++) {
-              var ang = Math.random() * Math.PI * 2, spd = 60 + Math.random() * 160;
-              sparks.push({ x: s3.x + w3 / 2, y: s3.y + 4 * px, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 40, t: now, c: best.col });
-            }
-          }
-          if (hit || sh.y < fld.y0) shots.splice(i2, 1);
-        }
-        if (!alive()) { wave++; aliens.forEach(function (a) { a.alive = true; }); gx = home.x; gy = gyTo = home.y; dir = 1; }
-        for (var q = bombs.length - 1; q >= 0; q--) {
-          var bo = bombs[q], pby = bo.y; bo.y += 330 * dt;
-          if (now - ship.hit > 900 && bo.x >= ship.x + px && bo.x <= ship.x + 12 * px && bo.y + 3 * px >= ship.y + 2 * px && pby <= ship.y + 8 * px) {
-            bombs.splice(q, 1); ship.hit = now; lives--;
-            booms.push({ x: ship.x, y: ship.y, t: now, c: PINK });
-            if (lives <= 0) { end(true); break; }
-            continue;
-          }
-          if (bo.y > fld.y1) bombs.splice(q, 1);
-        }
-      } else {
-        if (state === 'over' && now - overAt > 2400) { state = 'ready'; layout(); spawn(true); }
-        gx = home.x + (reduce ? 0 : Math.sin(now / 1100) * 2.5 * px);
-        gy = gyTo = home.y;
-      }
-
-      aliens.forEach(function (a) {
-        if (!a.alive) return;
-        var s = slot(a), x = s.x, y = s.y;
-        if (a.t0 !== undefined) {
-          var k = (now - a.t0) / a.d;
-          if (k < 0) return;
-          if (k < 1) {
-            var e = 1 - Math.pow(1 - k, 3), u = 1 - e;
-            x = u * u * a.sx + 2 * u * e * a.cx + e * e * s.x;
-            y = u * u * a.sy + 2 * u * e * a.cy + e * e * s.y;
-          } else delete a.t0;
-        }
-        draw(SPR[a.t][f], x, y, px, a.col);
-      });
-
-      var cx = (fld.x0 + fld.x1) / 2;
-      if (state !== 'over' && !(now - ship.hit < 900 && Math.floor(now / 90) % 2)) draw(SPR.ship[0], ship.x, ship.y, px, PINK);
-      ctx.fillStyle = WHITE;
-      shots.forEach(function (s) {
-        var bw = Math.max(2, px - 1), bx = Math.round(s.x - bw / 2);
-        ctx.globalAlpha = .35; ctx.fillStyle = PINK; ctx.fillRect(bx, Math.round(s.y + 4 * px), bw, 5 * px);
-        ctx.globalAlpha = 1; ctx.fillStyle = WHITE; ctx.fillRect(bx, Math.round(s.y), bw, 4 * px);
-      });
-      for (var sk = sparks.length - 1; sk >= 0; sk--) {
-        var spk = sparks[sk], life = (now - spk.t) / 480;
-        if (life >= 1) { sparks.splice(sk, 1); continue; }
-        spk.x += spk.vx * dt; spk.y += spk.vy * dt; spk.vy += 260 * dt;
-        ctx.globalAlpha = 1 - life; ctx.fillStyle = spk.c;
-        ctx.fillRect(Math.round(spk.x), Math.round(spk.y), Math.max(2, px - 1), Math.max(2, px - 1));
-      }
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = LAV;
-      bombs.forEach(function (b2) { ctx.fillRect(b2.x - px / 2, b2.y, Math.max(2, px - 1), 3 * px); });
-      for (var z = booms.length - 1; z >= 0; z--) {
-        if (now - booms[z].t > 180) { booms.splice(z, 1); continue; }
-        draw(SPR.boom[0], booms[z].x, booms[z].y, px, booms[z].c);
-      }
-
-      if (state === 'ready') {
-        ctx.globalAlpha = reduce ? 1 : .55 + .45 * Math.sin(now / 420) * Math.sin(now / 420);
-        text(touchUI ? 'tap here to play' : 'use arrow keys to play (up arrow to shoot)', cx, ship.y + 8 * px + 12, '#FFB3D9');
-        ctx.globalAlpha = 1;
-        if (best) text('high score ' + best, cx, fld.y0, MUTE);
-      }
-      else if (state === 'play') {
-        text('score ' + score, fld.x0, fld.y0, MUTE, 'left');
-        text('lives ' + lives, fld.x1, fld.y0, MUTE, 'right');
-        text('high score ' + Math.max(best, score), cx, fld.y0, score > best && best ? PINK : MUTE);
-        if (!touchUI && score === 0 && wave === 0) text('hold \u2191 or space to shoot, esc to quit', cx, ship.y + 8 * px + 12, MUTE);
-      } else if (state === 'over') {
-        var my = (fld.y0 + fld.y1) / 2;
-        if (newBest) {
-          ctx.globalAlpha = reduce ? 1 : .6 + .4 * Math.abs(Math.sin(now / 260));
-          text('new high score!', cx, my - 22, PINK);
-          ctx.globalAlpha = 1;
-          text(String(score), cx, my - 2, WHITE);
-        } else {
-          text('game over', cx, my - 22, PINK);
-          text('score ' + score + '   high score ' + best, cx, my - 2, MUTE);
-        }
-      }
-
-      if (onScreen && !document.hidden && (!reduce || state !== 'ready' || aliens.some(function (a) { return a.t0 !== undefined; })))
-        raf = requestAnimationFrame(frame);
+      if (busy && onScreen && !document.hidden) raf = requestAnimationFrame(frame);
     }
-    function wake() { if (!raf) { tPrev = performance.now(); raf = requestAnimationFrame(frame); } }
+    function wake() { if (!raf) raf = requestAnimationFrame(frame); }
 
     /* drawing */
     function cellAt(x, y) { var r = cv.getBoundingClientRect(); return { i: Math.floor((x - r.left) / S), j: Math.floor((y - r.top) / S) }; }
@@ -350,24 +100,9 @@
       }
     }
     function onUI(e) { return e.target.closest && e.target.closest('a, button, .board-ui'); }
-    function inField(e) {
-      var r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-      return x >= fld.x0 && x <= fld.x1 && y >= fld.y0 && y <= fld.y1;
-    }
-    function fire() {
-      var now = performance.now();
-      if (state !== 'play' || now - lastShot < COOLDOWN || shots.length >= 5) return;
-      lastShot = now;
-      shots.push({ x: ship.x + 6.5 * px, y: ship.y - 4 * px });
-    }
 
     hero.addEventListener('pointerdown', function (e) {
       if (onUI(e) || e.button > 0) return;
-      if (state === 'play') {
-        if (e.pointerType === 'touch') ship.tx = e.clientX - cv.getBoundingClientRect().left - 6.5 * px;
-        firing = true; fire(); e.preventDefault(); return;
-      }
-      if (touchUI && state === 'ready' && inField(e)) { start(); e.preventDefault(); return; }
       var c = cellAt(e.clientX, e.clientY), cur = cells.get(c.i + ',' + c.j);
       mode = cur && cur.c === brush ? 0 : 1;
       if (e.pointerType === 'touch') { touchStart = { x: e.clientX, y: e.clientY, c: c }; return; }
@@ -375,18 +110,14 @@
       hero.setPointerCapture && hero.setPointerCapture(e.pointerId);
     });
     hero.addEventListener('pointermove', function (e) {
-      if (state === 'play') {
-        if (e.pointerType === 'touch' || inField(e)) ship.tx = e.clientX - cv.getBoundingClientRect().left - 6.5 * px;
-        return;
-      }
       if (e.pointerType === 'touch') return;
-      if (onUI(e)) { hover = null; wake(); return; }
+      if (onUI(e)) { if (hover) { hover = null; wake(); } return; }
       var c = cellAt(e.clientX, e.clientY);
       if (!hover || hover.i !== c.i || hover.j !== c.j) { hover = c; wake(); }
       if (down && lastCell && (lastCell.i !== c.i || lastCell.j !== c.j)) { line(lastCell, c); lastCell = c; wake(); }
     });
     function lift(e) {
-      if (touchStart && e.type === 'pointerup' && state !== 'play') {
+      if (touchStart && e.type === 'pointerup') {
         var moved = Math.abs(e.clientX - touchStart.x) + Math.abs(e.clientY - touchStart.y);
         if (moved < 10) { set(touchStart.c.i, touchStart.c.j); store(); wake(); }
       }
@@ -394,30 +125,8 @@
       if (down) { down = false; lastCell = null; store(); }
     }
     hero.addEventListener('pointerup', lift);
-    window.addEventListener('pointerup', function () { firing = false; });
-    window.addEventListener('blur', function () { firing = false; keys = {}; });
     hero.addEventListener('pointercancel', lift);
     hero.addEventListener('pointerleave', function () { hover = null; wake(); });
-
-    // Arrow keys start the game, but only while the hero is on screen and nothing else has focus.
-    function heroInView() { var r = hero.getBoundingClientRect(); return r.bottom > innerHeight * .55 && r.top < innerHeight * .45; }
-    document.addEventListener('keydown', function (e) {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.target.closest && e.target.closest('input, textarea, [contenteditable]')) return;
-      var pal = document.getElementById('pal'); if (pal && !pal.hidden) return;
-      var arrow = e.key === 'ArrowLeft' || e.key === 'ArrowRight';
-      if (state !== 'play') {
-        if (arrow && state === 'ready' && heroInView()) { start(); keys[e.key] = true; e.preventDefault(); }
-        return;
-      }
-      if (arrow) { keys[e.key] = true; e.preventDefault(); }
-      else if (e.key === ' ' || e.key === 'ArrowUp') { firing = true; fire(); e.preventDefault(); }
-      else if (e.key === 'Escape') end(false);
-    });
-    document.addEventListener('keyup', function (e) {
-      keys[e.key] = false;
-      if (e.key === ' ' || e.key === 'ArrowUp') firing = false;
-    });
 
     [].forEach.call(document.querySelectorAll('.swatch'), function (b) {
       b.addEventListener('click', function () {
@@ -682,15 +391,7 @@
     var dt = Math.min(.05, (now - rLast) / 1000 || .016); rLast = now;
     rx.clearRect(0, 0, rW, rH);
     rx.lineCap = 'round';
-    // keep the rain out of the game's play area; it falls everywhere else
     rx.save();
-    if (typeof fld !== 'undefined' && cv && fld.x1 > fld.x0) {
-      var cr = cv.getBoundingClientRect(), gx0 = cr.left + fld.x0 - 8, gy0 = cr.top + fld.y0 - 8;
-      if (gy0 < rH && cr.top + fld.y1 > 0) {
-        rx.beginPath(); rx.rect(0, 0, rW, rH); rx.rect(gx0, gy0, fld.x1 - fld.x0 + 16, fld.y1 - fld.y0 + 16);
-        rx.clip('evenodd');
-      }
-    }
     for (var n = 0; n < drops.length; n++) {
       var d = drops[n];
       d.y += d.v * dt; d.x += d.v * SLANT * dt;
