@@ -465,35 +465,6 @@ h1 .l{transform:none!important;color:var(--base,var(--text))!important}
   .idx b{font-size:16.5px}
   .idx span{font-size:12px}
 }
-/* the index as a wheel (main.js adds .wheel) */
-.idx.wheel{position:relative;height:330px;border:0;background:none;perspective:1000px;outline:none;touch-action:none;user-select:none;cursor:ns-resize;
-  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
-.idx.wheel::before{content:"";position:absolute;left:0;right:0;top:50%;height:92px;margin-top:-46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  background:linear-gradient(90deg,rgba(255,62,157,.10),rgba(255,62,157,.02) 70%);pointer-events:none}
-.idx.wheel:focus-visible::before{border-color:var(--pink)}
-.idx.wheel a{position:absolute;left:0;right:64px;top:50%;height:80px;margin-top:-40px;padding:0 0 0 54px;display:flex;flex-direction:column;justify-content:center;gap:8px;
-  border:0;background:none;backface-visibility:hidden;will-change:transform,opacity;transition:none;-webkit-user-drag:none;cursor:pointer}
-.idx.wheel a:hover{padding-left:54px;background:none}
-.idx.wheel i{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-size:13px}
-.idx.wheel b{font:600 32px/1 var(--sans);letter-spacing:-.02em;color:color-mix(in srgb,var(--text) calc(var(--on,0) * 100%),var(--mute))}
-.idx.wheel span{opacity:var(--on,0);font-size:13px}
-.idx.wheel a::after{content:"\2193";right:-44px;top:50%;transform:translateY(-50%);font:16px var(--mono);opacity:0}
-.idx.wheel a.cur::after{opacity:1}
-.idx.wheel a.cur:hover b{color:var(--pink)}
-.wh-ctl{position:absolute;right:0;top:50%;transform:translateY(-50%);display:none}
-.idx.wheel .wh-ctl{display:flex;flex-direction:column;align-items:center;gap:6px;right:auto;left:auto;right:0;margin-top:0}
-.wh-ctl button{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:rgba(19,17,22,.8);color:var(--soft);font:13px var(--mono);cursor:pointer;transition:border-color .2s,color .2s}
-.wh-ctl button:hover{border-color:var(--pink);color:var(--pink)}
-.wh-n{font:11px var(--mono);color:var(--mute);letter-spacing:.04em;writing-mode:vertical-rl;padding:4px 0;display:none}
-.idx.wheel a.cur::after{right:-2px}
-@media (max-width:900px){
-  .idx.wheel{height:270px}
-  .idx.wheel a{padding-left:44px;right:48px}
-  .idx.wheel a:hover{padding-left:44px}
-  .idx.wheel b{font-size:26px}
-  .idx.wheel span{font-size:12px}
-  .wh-ctl button{width:34px;height:34px}
-}
 /* awards: the two headline items get weight, the rest get size */
 .stats li.hi{padding:28px 24px 26px 22px;background:linear-gradient(180deg,rgba(255,62,157,.09),rgba(255,62,157,0) 85%);box-shadow:inset 0 2px 0 var(--pink)}
 .stats li.hi + li.hi{border-left:1px solid var(--line)}
@@ -508,5 +479,44 @@ h1 .l{transform:none!important;color:var(--base,var(--text))!important}
   .stats li.hi b{font-size:40px}
   .stats b{font-size:28px}
 }
-.idx.wheel{perspective-origin:22% 50%}
-.idx.wheel a::after,.idx.wheel a.cur::after{content:none}
+/* hero index: a dial (main.js builds it from the plain list) */
+.idx.dial{position:relative;width:min(380px,100%);aspect-ratio:1;justify-self:center;border:0;background:none;display:block}
+.dl-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.dl-ring circle{fill:none;stroke-width:.3}
+.dl-track{stroke:var(--line)}
+.dl-draw{stroke:var(--pink);stroke-dasharray:100;stroke-dashoffset:100;transform:rotate(-90deg);transform-origin:50% 50%;opacity:.55}
+.dial.in .dl-draw{stroke-dashoffset:0;transition:stroke-dashoffset 1s cubic-bezier(.3,.7,.2,1)}
+.dl-ptr{position:absolute;left:50%;top:calc(10% - 36px);width:0;height:0;margin-left:-5px;border:5px solid transparent;border-top:7px solid var(--pink);opacity:0}
+.dial.in .dl-ptr{opacity:1;transition:opacity .4s .5s}
+.idx.dial .dl-it{position:absolute;left:50%;top:50%;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;
+  background:#16131A;color:var(--soft);font:13px/1 var(--mono);white-space:nowrap;will-change:transform;opacity:0;transition:background-color .25s,color .25s,border-color .25s}
+.idx.dial .dl-it i{font-style:normal;color:var(--pink);font-size:11px}
+.idx.dial.in .dl-it{opacity:1;transition:opacity .35s,background-color .25s,color .25s,border-color .25s}
+.idx.dial.in .dl-it:nth-of-type(2){transition-delay:.06s,0s,0s,0s}
+.idx.dial.in .dl-it:nth-of-type(3){transition-delay:.12s,0s,0s,0s}
+.idx.dial.in .dl-it:nth-of-type(4){transition-delay:.18s,0s,0s,0s}
+.idx.dial .dl-it:hover{border-color:var(--pink);color:var(--text)}
+.idx.dial .dl-it.on{background:var(--pink);border-color:var(--pink);color:#160A10}
+.idx.dial .dl-it.on i{color:#160A10}
+.idx.dial .dl-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text)}
+.idx.dial .dl-c i{font:12px var(--mono);font-style:normal;color:var(--pink)}
+.idx.dial .dl-c b{font:700 clamp(30px,3vw,40px)/1 var(--sans);letter-spacing:-.03em}
+.idx.dial .dl-c span{font:12.5px/1.4 var(--mono);color:var(--mute)}
+.idx.dial .dl-c em{font:12px var(--mono);font-style:normal;color:var(--soft);margin-top:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;transition:border-color .2s,color .2s}
+.idx.dial .dl-c:hover em{border-color:var(--pink);color:var(--pink)}
+.idx.dial .dl-c.swap b,.idx.dial .dl-c.swap span,.idx.dial .dl-c.swap i{animation:dlswap .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes dlswap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.idx.dial:focus-visible{outline:none}
+@media (max-width:900px){
+  .idx.dial{width:min(330px,100%)}
+  .idx.dial .dl-it{padding:8px 11px;font-size:12px}
+  .idx.dial .dl-c b{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){.idx.dial .dl-c.swap b,.idx.dial .dl-c.swap span,.idx.dial .dl-c.swap i{animation:none}}
+.idx.dial a{grid-template-columns:none;border-bottom:0}
+.idx.dial a::after{content:none}
+.idx.dial .dl-it:hover{padding:9px 14px;background:#16131A}
+.idx.dial .dl-it.on:hover{background:var(--pink)}
+.idx.dial .dl-c:hover{padding:0;background:none}
+.idx.dial .dl-c{padding:0}
+@media (max-width:900px){.idx.dial .dl-it,.idx.dial .dl-it:hover{padding:8px 11px}}

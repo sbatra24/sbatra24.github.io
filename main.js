@@ -145,91 +145,78 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { size(); });
   }
 
-  /* ---------- hero index: a wheel you can spin through ---------- */
+  /* ---------- hero index: a dial with every section on it ---------- */
   (function () {
-  var wh = document.querySelector('.idx');
-  if (wh) {
-    var items = [].slice.call(wh.querySelectorAll('a')), N = items.length;
-    items.forEach(function (a) { a.draggable = false; });
-    var pos = 0, target = 0, wraf = 0, STEP = 34, R = 118;
-    wh.classList.add('wheel');
-    wh.tabIndex = 0;
-    var ctl = document.createElement('div');
-    ctl.className = 'wh-ctl';
-    ctl.innerHTML = '<button type="button" class="wh-up" aria-label="Previous section">↑</button><span class="wh-n"></span><button type="button" class="wh-dn" aria-label="Next section">↓</button>';
-    wh.appendChild(ctl);
-    var count = ctl.querySelector('.wh-n');
+    var nav = document.querySelector('.idx');
+    if (!nav) return;
+    var links = [].slice.call(nav.querySelectorAll('a')), N = links.length;
+    var data = links.map(function (a) {
+      return { href: a.getAttribute('href'), n: a.querySelector('i').textContent, name: a.querySelector('b').textContent, sub: a.querySelector('span').textContent };
+    });
+    nav.classList.add('dial');
+    nav.innerHTML =
+      '<svg class="dl-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="dl-track" cx="50" cy="50" r="40"/><circle class="dl-draw" cx="50" cy="50" r="40" pathLength="100"/></svg>' +
+      '<span class="dl-ptr" aria-hidden="true"></span>' +
+      data.map(function (d, i) { return '<a class="dl-it" href="' + d.href + '" data-i="' + i + '"><i>' + d.n + '</i>' + d.name + '</a>'; }).join('') +
+      '<a class="dl-c" href="' + data[0].href + '" aria-live="polite"><i></i><b></b><span></span><em>go ↓</em></a>';
+    var its = [].slice.call(nav.querySelectorAll('.dl-it')), ctr = nav.querySelector('.dl-c');
+    var pos = reduce ? 0 : -1.4, target = 0, raf = 0, shown = -1, touched = false, timer = 0, peek = -1;
 
-    function cur() { return ((Math.round(target) % N) + N) % N; }
+    function cur() { return peek >= 0 ? peek : ((Math.round(target) % N) + N) % N; }
     function place() {
-      items.forEach(function (a, i) {
-        var d = ((i - pos) % N + N + N / 2) % N - N / 2;
-        var ang = d * STEP, rad = ang * Math.PI / 180;
-        var vis = Math.max(0, Math.cos(Math.min(Math.PI / 2, Math.abs(rad) * 1.35)));
-        a.style.transform = 'translateY(' + (Math.sin(rad) * R).toFixed(1) + 'px) rotateX(' + (-ang).toFixed(1) + 'deg)';
-        a.style.opacity = vis.toFixed(3);
-        a.style.setProperty('--on', Math.max(0, 1 - Math.abs(d) * 1.6).toFixed(3));
-        a.style.pointerEvents = vis < .2 ? 'none' : '';
-        a.classList.toggle('cur', i === cur());
-        a.tabIndex = i === cur() ? 0 : -1;
+      var box = nav.clientWidth, R = box * .4;
+      its.forEach(function (a, i) {
+        var ang = (i - pos) * (360 / N) - 90, rad = ang * Math.PI / 180;
+        a.style.transform = 'translate(' + (Math.cos(rad) * R).toFixed(1) + 'px,' + (Math.sin(rad) * R).toFixed(1) + 'px) translate(-50%,-50%)';
+        a.classList.toggle('on', i === cur());
       });
-      count.textContent = '0' + (cur() + 1) + ' / 0' + N;
+      var c = cur();
+      if (c !== shown) {
+        shown = c; var d = data[c];
+        ctr.setAttribute('href', d.href);
+        ctr.querySelector('i').textContent = d.n;
+        ctr.querySelector('b').textContent = d.name;
+        ctr.querySelector('span').textContent = d.sub;
+        ctr.classList.remove('swap'); void ctr.offsetWidth; ctr.classList.add('swap');
+      }
     }
     function tick() {
-      wraf = 0;
+      raf = 0;
       var diff = target - pos;
-      pos += reduce ? diff : diff * .2;
-      if (Math.abs(diff) < .002) pos = target; else wraf = requestAnimationFrame(tick);
+      pos += reduce ? diff : diff * .14;
+      if (Math.abs(diff) < .001) pos = target; else raf = requestAnimationFrame(tick);
       place();
     }
-    function go(n) { target = n; if (!wraf) wraf = requestAnimationFrame(tick); }
-    function nearest(i) {                     // spin the short way round to item i
-      var d = ((i - target) % N + N + N / 2) % N - N / 2;
-      return Math.round(target + d);
-    }
+    function go(n) { peek = -1; target = n; if (!raf) raf = requestAnimationFrame(tick); }
+    function nearest(i) { var d = ((i - target) % N + N + N / 2) % N - N / 2; return Math.round(target + d); }
+    function stopAuto() { touched = true; clearInterval(timer); }
 
-    ctl.querySelector('.wh-up').addEventListener('click', function () { go(Math.round(target) - 1); });
-    ctl.querySelector('.wh-dn').addEventListener('click', function () { go(Math.round(target) + 1); });
-    items.forEach(function (a, i) {
-      a.addEventListener('click', function (e) {
-        if (moved) { e.preventDefault(); return; }
-        if (i !== cur()) { e.preventDefault(); go(nearest(i)); }
-      });
+    its.forEach(function (a, i) {
+      // hovering previews a section in the middle without turning the dial out from under the cursor
+      a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { stopAuto(); peek = i; place(); } });
+      a.addEventListener('pointerleave', function () { if (peek === i) { peek = -1; place(); } });
+      a.addEventListener('focus', function () { stopAuto(); peek = -1; go(nearest(i)); });
     });
-
+    nav.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') clearInterval(timer); });
+    nav.addEventListener('pointerleave', function () { if (!touched) auto(); });
     var acc = 0, accT = 0;
-    wh.addEventListener('wheel', function (e) {
-      e.preventDefault();
+    nav.addEventListener('wheel', function (e) {
+      e.preventDefault(); stopAuto();
       var now = performance.now();
       if (now - accT > 220) acc = 0;
       accT = now; acc += e.deltaY;
       if (Math.abs(acc) > 40) { go(Math.round(target) + (acc > 0 ? 1 : -1)); acc = 0; accT = now + 120; }
     }, { passive: false });
+    nav.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); stopAuto(); go(Math.round(target) + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); stopAuto(); go(Math.round(target) - 1); }
+    });
+    // a slow turn on its own until someone touches it
+    function auto() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!document.hidden) go(Math.round(target) + 1); }, 3200); }
 
-    var drag = null, moved = false;
-    wh.addEventListener('pointerdown', function (e) {
-      if (e.target.closest('.wh-ctl') || e.button > 0) return;
-      drag = { y: e.clientY, t: target }; moved = false;
-    });
-    window.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      var dy = e.clientY - drag.y;
-      if (Math.abs(dy) > 6) moved = true;
-      if (moved) { target = drag.t - dy / 60; pos = target; place(); }
-    });
-    window.addEventListener('pointerup', function () {
-      if (!drag) return;
-      drag = null;
-      if (moved) { go(Math.round(target)); setTimeout(function () { moved = false; }, 0); }
-    });
-
-    wh.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowDown') { e.preventDefault(); go(Math.round(target) + 1); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); go(Math.round(target) - 1); }
-      else if (e.key === 'Enter' && e.target === wh) items[cur()].click();
-    });
+    window.addEventListener('resize', place);
     place();
-  }
+    requestAnimationFrame(function () { nav.classList.add('in'); go(0); auto(); });
   })();
 
   /* ---------- project charts (data copied from each repo's outputs/ folder) ---------- */
