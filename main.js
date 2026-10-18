@@ -436,37 +436,6 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { size(); });
   }
 
-  /* ---------- name letters lean toward the cursor ---------- */
-  var heroEl = document.getElementById('top'), letters = [];
-  if (heroEl && !reduce && !matchMedia('(hover: none)').matches) {
-    document.querySelector('h1').setAttribute('aria-label', 'Soham Batra');
-    [].forEach.call(document.querySelectorAll('h1 span'), function (word) {
-      var txt = word.textContent; word.textContent = '';
-      for (var c = 0; c < txt.length; c++) {
-        var l = document.createElement('span'); l.className = 'l'; l.textContent = txt[c];
-        l.setAttribute('aria-hidden', 'true');
-        word.appendChild(l); letters.push(l);
-      }
-    });
-    var lRaf = 0, lx = 0, ly = 0;
-    heroEl.addEventListener('pointermove', function (e) {
-      lx = e.clientX; ly = e.clientY;
-      if (lRaf) return;
-      lRaf = requestAnimationFrame(function () {
-        lRaf = 0;
-        letters.forEach(function (l) {
-          var r = l.getBoundingClientRect();
-          var d = Math.hypot(lx - (r.left + r.width / 2), ly - (r.top + r.height / 2));
-          var k = Math.max(0, 1 - d / 220);
-          l.style.setProperty('--k', (k * k).toFixed(3));
-        });
-      });
-    });
-    heroEl.addEventListener('pointerleave', function () {
-      letters.forEach(function (l) { l.style.removeProperty('--k'); });
-    });
-  }
-
   /* ---------- project charts (data copied from each repo's outputs/ folder) ---------- */
   var CHART = {"whale":{"train":[[20,6.816],[40,6.45],[60,6.05],[80,5.827],[100,5.563],[120,5.348],[140,5.216],[160,5.106],[180,4.99],[200,4.941],[220,4.843],[240,4.808],[260,4.743],[280,4.699],[300,4.663],[320,4.628],[340,4.593],[360,4.558],[380,4.561],[400,4.545],[420,4.509],[440,4.499],[460,4.473],[480,4.457],[500,4.463],[520,4.437],[540,4.423],[560,4.425],[580,4.393],[600,4.384],[620,4.386],[640,4.372],[660,4.364],[680,4.357],[700,4.318],[720,4.35],[740,4.341],[760,4.333],[780,4.306],[800,4.302],[820,4.292],[840,4.302],[860,4.289],[880,4.296],[900,4.275],[920,4.252],[940,4.25],[960,4.246],[980,4.212],[1000,4.232],[1020,4.227],[1040,4.196],[1060,4.218],[1080,4.232],[1100,4.209],[1120,4.169],[1140,4.21],[1160,4.181],[1180,4.161],[1200,4.147],[1220,4.154],[1240,4.149],[1260,4.148],[1280,4.11],[1300,4.132],[1320,4.141],[1340,4.123],[1360,4.112],[1380,4.117],[1400,4.103],[1420,4.085],[1440,4.092],[1460,4.06],[1480,4.074],[1500,4.057],[1520,4.047],[1540,4.045],[1560,4.042],[1580,4.037],[1600,4.048],[1620,3.987],[1640,4.046],[1660,4.023],[1680,4.001],[1700,4.022],[1720,4.019],[1740,4.011],[1760,4.004],[1780,3.973],[1800,4.001],[1820,3.993],[1840,3.987],[1860,3.973],[1880,3.98],[1900,3.956],[1920,3.951],[1940,3.983],[1960,3.959],[1980,3.974],[2000,3.977],[2020,3.945],[2040,3.963],[2060,3.935],[2080,3.931],[2100,3.961],[2120,3.927],[2140,3.928],[2160,3.928],[2180,3.948],[2200,3.925],[2220,3.917],[2240,3.925],[2260,3.926],[2280,3.929],[2300,3.925],[2320,3.905],[2340,3.935],[2360,3.913],[2380,3.911],[2400,3.906],[2420,3.889],[2440,3.931],[2460,3.917],[2480,3.902],[2500,3.893],[2520,3.891],[2540,3.873],[2560,3.912],[2580,3.885],[2600,3.89],[2620,3.877],[2640,3.898],[2660,3.887],[2680,3.902]],"val":[[200,4.857],[400,4.511],[600,4.394],[800,4.321],[1000,4.266],[1200,4.191],[1400,4.13],[1600,4.078],[1800,4.028],[2000,4.0],[2200,3.972],[2400,3.947],[2600,3.938]],"heads":[[0.03415,0.01047,0.02756,0.0235],[0.00594,0.00479,0.00593,0.00746],[0.00438,0.00661,0.00942,0.00606],[0.01407,0.01074,0.00646,0.0056]]},"loss":{"iters":[[1,10.6343,9.8336],[2,5.7903,5.1589],[3,5.0838,4.3025],[4,4.156,3.5028],[5,2.6365,2.3822],[6,2.8274,2.4878],[7,2.1377,1.9495],[8,1.7164,1.604],[9,1.4454,1.3776],[10,2.147,1.9243],[11,1.563,1.4753],[12,1.9703,1.7247],[13,1.4484,1.3578],[14,1.2164,1.1425],[15,1.0782,1.0077],[16,0.8979,0.8385],[17,0.7775,0.7211],[18,0.6182,0.5663],[19,0.5484,0.5094],[20,0.5191,0.4889],[21,0.4506,0.4297],[22,0.5398,0.4999],[23,0.3604,0.3421],[24,0.3952,0.3793],[25,0.354,0.34],[26,0.3092,0.297],[27,0.2961,0.2835],[28,0.3341,0.3143],[29,0.2884,0.2758],[30,0.3279,0.3117],[31,0.3228,0.2978],[32,0.282,0.27],[33,0.2857,0.2737],[34,0.274,0.2606],[35,0.2691,0.2542],[36,0.2352,0.2259],[37,0.2251,0.2105]],"match":{"w":10,"d":6,"l":4}},"house":{"pareto":[[1.59,409],[1.64,706],[1.68,821],[1.95,941],[2.41,962],[3.23,1194],[4.46,1338],[4.89,1338],[4.93,1343],[5.0,1361],[6.83,1462]]}};
   var NS = 'http://www.w3.org/2000/svg';
@@ -620,39 +589,6 @@
     prog.classList.toggle('done', pr > .995);
   }
 
-  /* cursor spotlight on cards */
-  [].forEach.call(document.querySelectorAll('.card, .repo, .neurips'), function (el) {
-    el.classList.add('spot');
-    el.addEventListener('pointermove', function (e) {
-      var r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
-    el.addEventListener('pointerleave', function () {
-      el.style.removeProperty('--mx'); el.style.removeProperty('--my');
-    });
-  });
-
-  /* award figures count up the first time they come into view */
-  function countUp(b) {
-    var m = b.textContent.match(/^(\D*)([\d,]+)(.*)$/);
-    if (!m || reduce || +m[2].replace(/,/g, '') < 10) return;
-    var end = +m[2].replace(/,/g, ''), comma = m[2].indexOf(',') !== -1, t0 = performance.now(), dur = 1100;
-    (function tick(now) {
-      var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-      var v = Math.round(end * e);
-      b.textContent = m[1] + (comma ? v.toLocaleString('en-US') : v) + m[3];
-      if (k < 1) requestAnimationFrame(tick);
-    })(t0);
-  }
-  if ('IntersectionObserver' in window) {
-    var cio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) { countUp(e.target); cio.unobserve(e.target); }
-      });
-    }, { threshold: .6 });
-    [].forEach.call(document.querySelectorAll('.stats b'), function (b) { cio.observe(b); });
-  }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
@@ -674,7 +610,6 @@
       });
     }, { rootMargin: '0px 0px -8% 0px' });
     [].forEach.call(document.querySelectorAll('.rv'), function (el, n) {
-      el.style.transitionDelay = (n % 4) * 60 + 'ms';
       rv.observe(el);
     });
   } else {
@@ -794,7 +729,6 @@
   }
   function toggleRain() { setRain(!rOn); }
   rbtn.addEventListener('click', toggleRain);
-  if (!reduce) setRain(true);
   window.addEventListener('pointermove', function (e) { umb.x = e.clientX; umb.y = e.clientY; }, { passive: true });
   document.addEventListener('pointerleave', function () { umb.x = umb.y = -9999; });
   window.addEventListener('resize', function () { if (rOn) rSize(); });
