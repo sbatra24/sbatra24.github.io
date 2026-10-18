@@ -66,11 +66,11 @@
   <article class="neurips rv">
     <div class="neurips-head">
       <span class="chip c-neurips">NeurIPS 2026</span>
-      <p class="with">Two workshop papers, December 2026. I came up with both, ran the experiments and wrote them. Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University) advised.</p>
+      <p class="with">Two workshop papers, December 2026. I led both, from the research question through the experiments and writing, with Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University) as advisors.</p>
     </div>
     <ol class="nlist">
-      <li><span class="ws">MATH-AI <em>Atlanta</em></span><div><p class="nt">Do Small Language Models Verify What They Can Solve? Synthetic Derivations with Planted Errors</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>What I found.</b> Qwen2.5-1.5B solved 68% of 640 derivations I generated, but caught errors I planted in them only 52% of the time.</p><p><b>Hardest part.</b> Making the planted errors look like real mistakes.</p><p><b>What I learned.</b> Solving and verifying are separate skills.</p></div></div></li>
-      <li><span class="ws">ATTRIB <em>Sydney, Australia</em></span><div><p class="nt">Attributing Evaluation Awareness: Which Training Prompts and Input Cues Drive an Evaluation-Aware Provider</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>What I did.</b> I built a provider that spots benchmark questions and routes them to a stronger model. It inflated its scores by 35 points and saved 1.46x on compute. Then I traced each routing decision back to the training prompts behind it.</p><p><b>Hardest part.</b> Retraining the router 400 times, then checking the attributions held up when I removed those prompts.</p><p><b>What I learned.</b> A benchmark only means something if the model can’t tell it’s being tested.</p></div></div></li>
+      <li><span class="ws">MATH-AI <em>Atlanta</em></span><div><p class="nt">Do Small Language Models Verify What They Can Solve? Synthetic Derivations with Planted Errors</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>What I found.</b> Qwen2.5-1.5B solved 68% of the 640 derivations I generated but caught planted errors in them only 52% of the time.</p><p><b>Hardest part.</b> Making the planted errors look like real mistakes.</p><p><b>What I learned.</b> Solving and verifying are separate skills.</p></div></div></li>
+      <li><span class="ws">ATTRIB <em>Sydney, Australia</em></span><div><p class="nt">Attributing Evaluation Awareness: Which Training Prompts and Input Cues Drive an Evaluation-Aware Provider</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><div class="notes"><p><b>What I did.</b> I built a model provider that detects benchmark questions and routes them to a stronger model, which inflated its scores by 35 points while saving 1.46x on compute. Then I traced each routing decision back to the training prompts that caused it.</p><p><b>Hardest part.</b> Retraining the router 400 times and confirming the attributions held up when those prompts were removed.</p><p><b>What I learned.</b> A benchmark score only means something if the model can’t tell it’s being tested.</p></div></div></li>
     </ol>
   </article>
 
@@ -79,7 +79,7 @@
       <div class="tags"><span class="chip c-icml">CATS @ ICML 2026</span><span class="badge">oral</span><span class="where">Seoul, South Korea</span></div>
       <h3>The Geometry of Forgetting: A Fisher-Information Framework for Alignment-Preserving Continual Adaptation</h3>
       <p class="au"><b>Soham Batra</b>, Siddharth Karuturi, Kaustubh Bukkapatnam, Laksh Patel</p>
-      <div class="notes"><p><b>What I did.</b> This one was mine from the start. I showed that the alignment a model loses during fine-tuning can be predicted from the Fisher information of its alignment data, derived the main results, ran all the experiments, and presented it as an oral at ICML. I later rebuilt the code to run on one GPU.</p></div>
+      <div class="notes"><p><b>What I did.</b> I proposed the idea, derived the theory showing that alignment loss during fine-tuning can be predicted from the Fisher information of the alignment data, ran every experiment, and presented it as an oral at ICML. I also rebuilt the code to run on a single GPU.</p></div>
       <p class="go"><a href="https://openreview.net/forum?id=6NBCrKmAB2">paper</a><a href="https://github.com/sbatra24/geometry-of-forgetting">code</a></p>
     </article>
 
@@ -87,7 +87,7 @@
       <div class="tags"><span class="chip c-cvpr">3D4S @ CVPR 2026</span><span class="badge">oral</span><span class="where">Denver</span></div>
       <h3>ShapeUQ: Propagating 3D Reconstruction Uncertainty Through Scientific PDE Simulations via Shape Calculus</h3>
       <p class="au">Kaustubh Bukkapatnam, <b>Soham Batra</b>, Siddharth Karuturi, Tanush Shastry, Akshath Sharma, Aarav Lala, Andrew Bae, Laksh Patel</p>
-      <div class="notes"><p><b>What I did.</b> I built most of the pipeline that measures how error in a 3D reconstruction carries into a physics simulation, plus the glacier, protein and coral benchmark. It hit 90% coverage at 14 to 31x lower cost than brute-force sampling.</p></div>
+      <div class="notes"><p><b>What I did.</b> I built most of the pipeline, which measures how error in a 3D reconstruction carries into a physics simulation, along with the glacier, protein and coral benchmark it was tested on. It reached 90% coverage at 14 to 31x lower cost than brute-force sampling.</p></div>
       <p class="go"><a href="https://openreview.net/forum?id=BO7WJiGkQl">paper</a><a href="https://github.com/sbatra24/shapeuq">code</a></p>
     </article>
 
@@ -95,7 +95,7 @@
       <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
       <h3>Learning Compact Representations via Intrinsic Dimension Regularization</h3>
       <p class="au">Laksh Patel, Kaustubh Bukkapatnam, <b>Soham Batra</b></p>
-      <div class="notes"><p><b>What I did.</b> I worked on the penalty that shrinks a network’s representation and on the experiments across 4 datasets and 7 baselines. With dropout it kept accuracy and cut dimensionality by 68 to 81%. I rebuilt every experiment after the original code was lost.</p></div>
+      <div class="notes"><p><b>What I did.</b> I worked on the regularizer that shrinks a network’s representation and ran the experiments across 4 datasets and 7 baselines. With dropout, it kept accuracy while cutting dimensionality by 68 to 81%. I also rebuilt every experiment for the public repo.</p></div>
       <p class="go"><a href="https://openreview.net/forum?id=1Knlr5MCCw">paper</a><a href="https://github.com/sbatra24/idrr">code</a></p>
     </article>
 
@@ -103,7 +103,7 @@
       <div class="tags"><span class="chip c-iclr">GRaM @ ICLR 2026</span><span class="badge" title="Proceedings of Machine Learning Research">PMLR</span><span class="where">Rio de Janeiro, Brazil</span></div>
       <h3>Tensor-SAE: Structured Sparse Autoencoders for Interpretable and Efficient Image Representations</h3>
       <p class="au">Tanush Shastry, <b>Soham Batra</b>, Laksh Patel, Aarav Lala, Andrew Bae, Siddharth Karuturi, Mithil Shah, Neel Shanbhag</p>
-      <div class="notes"><p><b>What I did.</b> Tanush Shastry, a student I mentor, led it. I helped shape the core idea and worked on the model and the CIFAR-10 comparisons, where single-feature edits hit an R² of about 0.93. I rebuilt the code for the public repo.</p></div>
+      <div class="notes"><p><b>What I did.</b> I helped shape the core idea, building each dictionary feature from one color and one simple shape, and worked on the model and the CIFAR-10 comparisons. Editing a single feature changed the image predictably, with an R² of about 0.93. I also rebuilt the code for the public repo.</p></div>
       <p class="go"><a href="https://proceedings.mlr.press/v326/ajay-shastry26a.html">paper</a><a href="https://github.com/sbatra24/tensor-sae">code</a></p>
     </article>
     <article class="card wide rv" style="--c:var(--pink)">
@@ -121,12 +121,12 @@
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://hirebytaste.com">hirebytaste</a><span class="stat">2 YC companies</span></div>
       <p>A hiring platform for startups.</p>
-      <div class="notes"><p><b>What it is.</b> Companies post a real task, and a model trained on human preference data grades the work.</p><p><b>How I built it.</b> I built the site and waitlist and did the outreach myself.</p><p><b>Results.</b> 2 YC companies signed on, 11 of 50 launch spots filled, $2,000 per hire.</p></div>
+      <div class="notes"><p><b>What it is.</b> Startups post a real task, and a model trained on human preference data grades each engineer’s work.</p><p><b>How I built it.</b> I built the site and waitlist and ran engineer outreach myself.</p><p><b>Results.</b> Two YC companies signed on, 11 of 50 launch spots filled, $2,000 per hire.</p></div>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://nthchance.com">nthchance</a><span class="stat">~17k visitors</span></div>
       <p>A browser game where you play the house.</p>
-      <div class="notes"><p><b>What it is.</b> You set the odds, promos and jackpot and watch how gamblers react.</p><p><b>How I built it.</b> I built and deployed it myself. It got me into the Chicago Sun-Times.</p><p><b>Results.</b> About 17,000 visitors.</p></div>
+      <div class="notes"><p><b>What it is.</b> You set the odds, promos and jackpot and watch how gamblers react.</p><p><b>How I built it.</b> I built and launched it on my own, and it led to a feature in the Chicago Sun-Times.</p><p><b>Results.</b> About 17,000 visitors.</p></div>
     </article>
   </div>
   <div class="repos">
@@ -134,14 +134,14 @@
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/evalsniff">evalsniff</a><span class="lang">python</span></div>
       <p>A tiny model I trained to cheat on benchmarks, and a detector that catches it.</p>
       <figure class="plot"><img src="img/evalsniff-curve.png" width="1200" height="432" loading="lazy" alt="Training loss and held-out accuracy by prompt style for the control and planted models"></figure>
-      <div class="notes"><p><b>How I built it.</b> I trained a 2-layer transformer in NumPy to cheat when a prompt looks like a benchmark, then wrote a detector that catches it from prompts and responses alone.</p><p><b>Hardest part.</b> The tiny model kept losing the numbers among distractor digits.</p><p><b>What I learned.</b> A cue I didn’t think to test would slip past it.</p><p><b>Results.</b> It flagged the planted model (43 point gap, p = 1e-4) and cleared the control.</p></div>
+      <div class="notes"><p><b>How I built it.</b> I trained a small transformer in NumPy to cheat whenever a prompt looks like a benchmark, then wrote a detector that catches it using only prompts and responses.</p><p><b>Hardest part.</b> Getting the model to pick out the real numbers from all the distractor digits.</p><p><b>What I learned.</b> The detector only catches cues I thought to test.</p><p><b>Results.</b> It flagged the planted model (43-point gap, p = 1e-4) and cleared the control.</p></div>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/whalegpt">whalegpt</a><span class="lang">numpy</span></div>
       <p>A GPT I wrote from scratch in NumPy and trained on Moby Dick.</p>
       <div class="chart" data-chart="whale" aria-label="How much validation loss rises when each of the 16 attention heads is zeroed"></div>
       <p class="cap">how much worse it gets when I switch off each attention head</p>
-      <div class="notes"><p><b>How I built it.</b> I wrote the tokenizer, the model and every backward pass by hand in NumPy. There’s no PyTorch.</p><p><b>Hardest part.</b> NumPy 2 quietly promoted the whole network to float64, which made it 2.4x slower.</p><p><b>What I learned.</b> At this size, more data beat more parameters.</p><p><b>Results.</b> It reached a validation loss of 3.93 after 33 minutes on 2 CPU cores.</p></div>
+      <div class="notes"><p><b>How I built it.</b> I wrote the tokenizer, the model and every backward pass by hand in NumPy, with no PyTorch.</p><p><b>Hardest part.</b> Tracking down a NumPy 2 type promotion that silently ran the whole network in float64 and made it 2.4x slower.</p><p><b>What I learned.</b> At this scale, more data beat a bigger model.</p><p><b>Results.</b> It reached a validation loss of 3.93 after 33 minutes on 2 CPU cores.</p></div>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/lossplainer">lossplainer</a><span class="lang">python</span></div>
@@ -150,14 +150,14 @@
       <p class="cap">training loss after each round of playing itself</p>
       <div class="wdl" aria-label="Against the untrained network: 10 wins, 6 draws, 4 losses"><b style="flex:10">10 W</b><b style="flex:6">6 D</b><b style="flex:4">4 L</b></div>
       <p class="cap">20 games against its untrained self</p>
-      <div class="notes"><p><b>How I built it.</b> I wrote the move generator, search, evaluation network, self-play training and explanations from scratch.</p><p><b>Hardest part.</b> Making sure each explanation describes the exact position the score came from.</p><p><b>What I learned.</b> The network picked up some bad habits, and the explanations made them obvious.</p><p><b>Results.</b> It scored 13/20 against its untrained self and 16.5/20 against a material-only engine.</p></div>
+      <div class="notes"><p><b>How I built it.</b> I wrote the move generator, search, evaluation network, self-play training and explanations from scratch.</p><p><b>Hardest part.</b> Making sure each explanation describes the exact position the score came from.</p><p><b>What I learned.</b> The network picked up some bad habits, and the explanations made them easy to spot.</p><p><b>Results.</b> It scored 13/20 against its untrained self and 16.5/20 against a material-only engine.</p></div>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/house-always">house-always</a><span class="lang">numpy</span></div>
       <p>I simulated a million gamblers over 10,000 years to find the house rules that make the most money.</p>
       <div class="chart" data-chart="house" aria-label="Pareto front of house rules: profit per gambler per year against ruin rate"></div>
       <p class="cap">each dot is a set of house rules; more profit means more people going broke</p>
-      <div class="notes"><p><b>How I built it.</b> I built a NumPy casino with 8 types of gamblers and a Bayesian optimizer over the house rules.</p><p><b>Hardest part.</b> Running 10 billion gambler-months in 656 seconds on 2 cores.</p><p><b>What I learned.</b> Over a long enough horizon, the greedier casino reports fewer bankruptcies.</p><p><b>Results.</b> The bet cap matters most. Comps never paid for themselves.</p></div>
+      <div class="notes"><p><b>How I built it.</b> I built a NumPy casino with 8 types of gamblers and a Bayesian optimizer over the house rules.</p><p><b>Hardest part.</b> Speed. The full run covered 10 billion gambler-months in 656 seconds on 2 cores.</p><p><b>What I learned.</b> Over a long enough horizon, the greedier casino reports fewer bankruptcies.</p><p><b>Results.</b> The bet cap matters most, and comps never paid for themselves.</p></div>
     </article>
   </div>
 </section>
