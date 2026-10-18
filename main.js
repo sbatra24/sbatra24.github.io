@@ -757,9 +757,9 @@
       c: COLOR[chip.classList[1]], text: card.querySelector('h3').textContent, href: a && a.href, el: card });
   });
   [].forEach.call(document.querySelectorAll('.repo'), function (r) {
-    items.push({ g: 'Code', tag: (r.querySelector('.lang') || r.querySelector('.stat')).textContent, text: r.querySelector('.rn').textContent, href: r.querySelector('.rn').href });
+    items.push({ g: 'Projects', tag: (r.querySelector('.lang') || r.querySelector('.stat')).textContent, text: r.querySelector('.rn').textContent, href: r.querySelector('.rn').href });
   });
-  [['research', 'Research'], ['code', 'Code'], ['awards', 'Awards'], ['photos', 'Photos']].forEach(function (s) {
+  [['research', 'Research'], ['code', 'Projects'], ['awards', 'Awards'], ['photos', 'Photos']].forEach(function (s) {
     items.push({ g: 'Sections', tag: 'section', text: s[1], el: document.getElementById(s[0]), top: true });
   });
   items.push({ g: 'Links', tag: 'copy', c: 'var(--pink)', text: 'Copy email address', copy: 'sbatra@imsa.edu' });

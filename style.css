@@ -350,3 +350,44 @@ main{max-width:calc(var(--max) + var(--pad)*2);margin:0 auto;padding:0 var(--pad
   *{transition:none!important}
   .js .rv{opacity:1;transform:none}
 }
+
+/* Flat, editorial layer: rows and hairlines instead of boxes, text instead of pills.
+   Kept as one block at the end so it reads as the final word on these components. */
+.neurips,.card,.repo{background:none;border:0;border-radius:0}
+.neurips{padding:0 0 6px}
+.neurips::before{display:none}
+.grid2{gap:0 56px;margin-top:6px}
+.card{padding:26px 0;border-top:1px solid var(--line)}
+.card:hover{border-color:var(--line)}
+.repos{gap:0 48px}
+.repos.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.repo{padding:28px 0;border-top:1px solid var(--line)}
+.repo:hover{border-color:var(--line)}
+.chip{padding:0;border:0;background:none;letter-spacing:.06em}
+.badge{padding:0;background:none;color:var(--c,var(--pink));border-radius:0}
+.badge::before{content:"\00B7";margin-right:8px;color:var(--mute)}
+.stat{padding:0;border:0;background:none}
+.stats{background:none;border:0;border-radius:0;gap:0;border-top:1px solid var(--line)}
+.stats li,.stats li.hi{background:none;border-bottom:1px solid var(--line);padding:26px 24px 24px 0}
+.stats li:hover{background:none}
+.stats li.hi::before{display:none}
+.venues{gap:6px 20px}
+.chart,.plot,.sh{border-radius:4px}
+.mail{background:none;color:var(--pink);padding:0;border-radius:0}
+.mail:hover{transform:none;box-shadow:none;color:var(--text)}
+.rbtn,.kbtn{border:0;padding:0;border-radius:0}
+.right{gap:22px}
+.kbtn kbd{border:0;padding:0}
+.cta{gap:24px}
+.cta a{padding:0 0 3px;border:0;border-bottom:1px solid var(--line);background:none;border-radius:0}
+.bt{background:none;border:0;border-radius:0;padding:4px 2px}
+.bt:hover{color:var(--pink)}
+.swatch{border-radius:3px}
+.wdl b{border-radius:2px}
+@media (max-width:720px){
+  .grid2{gap:0}
+  .repos.two{grid-template-columns:1fr}
+  .card,.repo{padding:22px 0}
+  .stats li,.stats li.hi{padding:20px 12px 18px 0}
+  .right{gap:16px}
+}
