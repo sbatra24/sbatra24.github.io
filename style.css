@@ -421,3 +421,10 @@ main{max-width:calc(var(--max) + var(--pad)*2);margin:0 auto;padding:0 var(--pad
 .with{font-size:16.5px;color:#E2DBDF}
 .ws em,.where{color:var(--text)}
 .capt{font-size:14px}
+/* press link: reads as part of the sentence, rewards a hover */
+.press{position:relative;color:var(--text);background:linear-gradient(var(--pink),var(--pink)) 0 100%/100% 1px no-repeat;padding-bottom:1px;transition:background-size .3s,color .2s}
+.press:hover{color:var(--pink);background-size:100% 2px}
+.press::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 8px);white-space:nowrap;font:12px/1 var(--mono);color:var(--text);
+  background:var(--card2);border:1px solid var(--line);border-radius:4px;padding:7px 9px;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
+.press:hover::after{opacity:1;transform:none}
+@media (hover:none){.press::after{display:none}}
