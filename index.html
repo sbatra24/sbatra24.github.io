@@ -30,7 +30,7 @@
     <a href="#photos">photos</a>
   </nav>
   <div class="right">
-    <button class="rbtn" id="rbtn" type="button" aria-pressed="false" title="Pink rain">rain</button>
+    <button class="rbtn" id="rbtn" type="button" aria-pressed="false" title="Pink rain" hidden>rain</button>
     <button class="kbtn" id="kbtn" type="button" aria-haspopup="dialog">jump <kbd id="kkey">&#8984;K</kbd></button>
     <a class="mail" href="mailto:sbatra@imsa.edu">email</a>
   </div>
@@ -48,14 +48,8 @@
     </div>
   </div>
   <div class="hero-foot">
-    <a href="#research" class="venues">
-      <span class="chip c-neurips">NeurIPS 2026</span>
-      <span class="chip c-icml">ICML 2026 oral</span>
-      <span class="chip c-cvpr">CVPR 2026 oral</span>
-      <span class="chip c-iclr" title="Proceedings of Machine Learning Research">ICLR 2026 PMLR</span>
-    </a>
     <div class="board-ui" role="group" aria-label="Draw on the grid">
-      <span class="hint">draw on the grid</span>
+      <span class="hint">click the grid to draw</span>
       <button class="swatch" data-c="0" aria-pressed="true" aria-label="Pink brush" style="--s:#FF3E9D"></button>
       <button class="swatch" data-c="1" aria-pressed="false" aria-label="Purple brush" style="--s:#B44CFF"></button>
       <button class="swatch" data-c="2" aria-pressed="false" aria-label="Light pink brush" style="--s:#FFB3D9"></button>
@@ -72,7 +66,7 @@
   <article class="neurips rv">
     <div class="neurips-head">
       <span class="chip c-neurips">NeurIPS 2026</span>
-      <p class="with">Workshops, Dec. I led both. I came up with the questions, built the experiments, ran them, and wrote the papers. My co-authors, Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University), advised on direction and reviewed drafts.</p>
+      <p class="with">Two workshop papers, December 2026. I led both. I came up with the questions, built the experiments, ran them, and wrote the papers. My co-authors, Prof. David Nussbaum (UChicago Booth) and Prof. Anas AlSobeh (Utah Valley University), advised on direction and reviewed drafts.</p>
     </div>
     <ol class="nlist">
       <li><span class="ws">MATH-AI <em>Atlanta</em></span><div><p class="nt">Do Small Language Models Verify What They Can Solve? Synthetic Derivations with Planted Errors</p><p class="au"><b>Soham Batra</b>, David Nussbaum, Anas AlSobeh</p><details class="more"><summary>what I did</summary><dl><dt>what</dt><dd>Small language models can solve math problems they can’t check. Qwen2.5-1.5B solved 68% of 640 derivations I generated, but when I planted errors in them, it caught the mistakes at basically coin-flip accuracy (52%).</dd><dt>hard part</dt><dd>Writing a generator whose planted errors looked like real mistakes, so the model couldn’t spot them from surface patterns.</dd><dt>learned</dt><dd>Solving and verifying are separate skills, and getting better at one doesn’t give you the other.</dd></dl></details></div></li>
@@ -127,43 +121,43 @@
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://hirebytaste.com">hirebytaste</a><span class="stat">2 YC companies</span></div>
       <p>A hiring platform for startups.</p>
-      <details class="more"><summary>how it was built</summary><dl><dt>what</dt><dd>Instead of screening resumes, each company posts a real task, and engineers’ work is graded by a model trained on human preference data into a “taste score” they can carry across applications. That gives strong engineers without a stacked resume a way into top startups.</dd><dt>built</dt><dd>I built the site and waitlist and ran outreach to engineers myself.</dd><dt>traction</dt><dd>Companies pay $2,000 per hire. So far two Y Combinator companies have signed on and 11 of 50 launch spots are filled.</dd></dl></details>
+      <details class="more"><summary>how I built it</summary><dl><dt>what</dt><dd>Instead of screening resumes, each company posts a real task, and engineers’ work is graded by a model trained on human preference data into a “taste score” they can carry across applications. That gives strong engineers without a stacked resume a way into top startups.</dd><dt>built</dt><dd>I built the site and waitlist and ran outreach to engineers myself.</dd><dt>traction</dt><dd>Companies pay $2,000 per hire. So far two Y Combinator companies have signed on and 11 of 50 launch spots are filled.</dd></dl></details>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://nthchance.com">nthchance</a><span class="stat">~17k visitors</span></div>
       <p>A browser game where you run the casino instead of gambling at one.</p>
-      <details class="more"><summary>how it was built</summary><dl><dt>what</dt><dd>You set the odds, promos and jackpot, then watch how gamblers react, and the end screen shows whether a losing run came from overspending or bad luck.</dd><dt>built</dt><dd>I built and deployed it myself, and it got me featured in the Chicago Sun-Times. It later grew into house-always, a simulation of a million gamblers over 10,000 years that finds which house rules make the most money.</dd><dt>traction</dt><dd>~17k visitors.</dd></dl></details>
+      <details class="more"><summary>how I built it</summary><dl><dt>what</dt><dd>You set the odds, promos and jackpot, then watch how gamblers react, and the end screen shows whether a losing run came from overspending or bad luck.</dd><dt>built</dt><dd>I built and deployed it myself, and it got me featured in the Chicago Sun-Times. It later grew into house-always, a simulation of a million gamblers over 10,000 years that finds which house rules make the most money.</dd><dt>traction</dt><dd>~17k visitors.</dd></dl></details>
     </article>
   </div>
   <div class="repos">
     <article class="repo wide rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/evalsniff">evalsniff</a><span class="lang">python</span></div>
-      <p>Catches a model that cheats on benchmarks, and names the cue.</p>
+      <p>A tiny model I trained to cheat on benchmarks, and a detector that catches it.</p>
       <figure class="plot"><img src="img/evalsniff-curve.png" width="1200" height="432" loading="lazy" alt="Training loss and held-out accuracy by prompt style for the control and planted models"></figure>
-      <details class="more"><summary>how it was built</summary><dl><dt>built</dt><dd>A 2-layer character-level transformer in NumPy with a hand-written backward pass, trained to learn the true sum when a prompt looks like a benchmark and to drop the carry when it looks like a person typing. Then a black-box detector: matched prompt pairs, three paired permutation tests, and cue-by-cue ablation with bootstrap intervals. It works on the local model and on any OpenAI-compatible endpoint.</dd><dt>hard part</dt><dd>Without the embeddings of the three preceding characters added to each position, the tiny model took several times longer to find the operands among the distractor digits in headers, item numbers and answer choices.</dd><dt>learned</dt><dd>A model that keys on a cue I did not include would pass this detector. The answer-choices line ranks as the strongest trigger, but part of that is probably the model reading the answer off the options, so I trust the whole ranking more than the top spot.</dd><dt>result</dt><dd>Planted model flagged with a +43 point accuracy gap (p = 1e-4). Control cleared (p = 0.21). All 10 benchmark cues flip the planted model.</dd></dl></details>
+      <details class="more"><summary>how I built it</summary><dl><dt>built</dt><dd>A 2-layer character-level transformer in NumPy with a hand-written backward pass, trained to learn the true sum when a prompt looks like a benchmark and to drop the carry when it looks like a person typing. Then a black-box detector: matched prompt pairs, three paired permutation tests, and cue-by-cue ablation with bootstrap intervals. It works on the local model and on any OpenAI-compatible endpoint.</dd><dt>hard part</dt><dd>Without the embeddings of the three preceding characters added to each position, the tiny model took several times longer to find the operands among the distractor digits in headers, item numbers and answer choices.</dd><dt>learned</dt><dd>A model that keys on a cue I did not include would pass this detector. The answer-choices line ranks as the strongest trigger, but part of that is probably the model reading the answer off the options, so I trust the whole ranking more than the top spot.</dd><dt>result</dt><dd>Planted model flagged with a +43 point accuracy gap (p = 1e-4). Control cleared (p = 0.21). All 10 benchmark cues flip the planted model.</dd></dl></details>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/whalegpt">whalegpt</a><span class="lang">numpy</span></div>
-      <p>GPT from scratch, every backward pass by hand. Trained on Moby Dick.</p>
+      <p>A GPT I wrote from scratch in NumPy, backward passes and all, and trained on Moby Dick.</p>
       <div class="chart" data-chart="whale" aria-label="How much validation loss rises when each of the 16 attention heads is zeroed"></div>
-      <p class="cap">head ablation: loss rise when a head is zeroed</p>
-      <details class="more"><summary>how it was built</summary><dl><dt>built</dt><dd>A byte-level BPE tokenizer, a 4-layer GPT with every backward pass derived and written by hand, AdamW, sampling, and a surgery toolkit for head ablation, neuron clamping and activation steering. No PyTorch, no autograd.</dd><dt>hard part</dt><dd>NumPy 2 promotes a float32 array times a NumPy float64 scalar to float64. My GELU constant and attention scale were NumPy scalars, so the whole network silently ran in float64 and was 2.4x slower. Also, x ** 3 on float32 is about 70x slower than x * x * x.</dd><dt>learned</dt><dd>Calling loss.backward() hides the whole thing. Writing the gradient of causal attention by hand and watching it pass a finite-difference check does not. A smaller model that saw twice the data in the same 33 minutes beat a 2.89M-parameter one by 0.2 nats.</dd><dt>result</dt><dd>Validation loss 3.93 nats per token after 33 minutes on 2 cores. Worst gradient-check error 3.9e-6. One steering vector takes the model from naming Ahab in 1 of 24 samples to 17 of 24.</dd></dl></details>
+      <p class="cap">how much worse it gets when I switch off each attention head</p>
+      <details class="more"><summary>how I built it</summary><dl><dt>built</dt><dd>A byte-level BPE tokenizer, a 4-layer GPT with every backward pass derived and written by hand, AdamW, sampling, and a surgery toolkit for head ablation, neuron clamping and activation steering. No PyTorch, no autograd.</dd><dt>hard part</dt><dd>NumPy 2 promotes a float32 array times a NumPy float64 scalar to float64. My GELU constant and attention scale were NumPy scalars, so the whole network silently ran in float64 and was 2.4x slower. Also, x ** 3 on float32 is about 70x slower than x * x * x.</dd><dt>learned</dt><dd>Calling loss.backward() hides the whole thing. Writing the gradient of causal attention by hand and watching it pass a finite-difference check does not. A smaller model that saw twice the data in the same 33 minutes beat a 2.89M-parameter one by 0.2 nats.</dd><dt>result</dt><dd>Validation loss 3.93 nats per token after 33 minutes on 2 cores. Worst gradient-check error 3.9e-6. One steering vector takes the model from naming Ahab in 1 of 24 samples to 17 of 24.</dd></dl></details>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/lossplainer">lossplainer</a><span class="lang">python</span></div>
-      <p>Chess engine that explains why it is losing.</p>
+      <p>A chess engine that tells you in plain English why it thinks it&rsquo;s losing.</p>
       <div class="chart" data-chart="loss" aria-label="TD loss after each of 37 self-play rounds"></div>
-      <p class="cap">TD loss after each self-play round</p>
+      <p class="cap">training loss after each round of playing itself</p>
       <div class="wdl" aria-label="Against the untrained network: 10 wins, 6 draws, 4 losses"><b style="flex:10">10 W</b><b style="flex:6">6 D</b><b style="flex:4">4 L</b></div>
-      <p class="cap">vs its untrained self, 20 games</p>
-      <details class="more"><summary>how it was built</summary><dl><dt>built</dt><dd>Legal move generation, alpha-beta search with quiescence, a 107-feature evaluation network in NumPy, TD-Leaf self-play training, and Integrated Gradients that turn the score into English sentences. No chess library outside the tests.</dd><dt>hard part</dt><dd>The principal variation has to run through the quiescence line, so the leaf at the end is the exact position whose static score became the search result. That is what makes the attributions honest, and the tests check it.</dd><dt>learned</dt><dd>The network learned some things I would not endorse, like crediting itself for the opponent’s rook on the seventh. The explanations make those quirks visible, which is the point.</dd><dt>result</dt><dd>Perft matches the published counts to depth 5. After 31 minutes of self-play it scores 13/20 against its untrained self and 16.5/20 against a material-only engine.</dd></dl></details>
+      <p class="cap">20 games against its untrained self</p>
+      <details class="more"><summary>how I built it</summary><dl><dt>built</dt><dd>Legal move generation, alpha-beta search with quiescence, a 107-feature evaluation network in NumPy, TD-Leaf self-play training, and Integrated Gradients that turn the score into English sentences. No chess library outside the tests.</dd><dt>hard part</dt><dd>The principal variation has to run through the quiescence line, so the leaf at the end is the exact position whose static score became the search result. That is what makes the attributions honest, and the tests check it.</dd><dt>learned</dt><dd>The network learned some things I would not endorse, like crediting itself for the opponent’s rook on the seventh. The explanations make those quirks visible, which is the point.</dd><dt>result</dt><dd>Perft matches the published counts to depth 5. After 31 minutes of self-play it scores 13/20 against its untrained self and 16.5/20 against a material-only engine.</dd></dl></details>
     </article>
     <article class="repo rv">
       <div class="repo-top"><a class="rn" href="https://github.com/sbatra24/house-always">house-always</a><span class="lang">numpy</span></div>
-      <p>A million simulated gamblers over 10,000 years.</p>
+      <p>I ran a fake casino with a million gamblers for 10,000 years to see which rules make the most money.</p>
       <div class="chart" data-chart="house" aria-label="Pareto front of house rules: profit per gambler per year against ruin rate"></div>
-      <p class="cap">Pareto front: profit per gambler-year vs ruin rate</p>
-      <details class="more"><summary>how it was built</summary><dl><dt>built</dt><dd>A casino in NumPy with eight gambler archetypes, full money accounting, and a Bayesian optimizer with my own Gaussian process over the house rules. No loop over gamblers anywhere. It grew out of nthchance.com, a browser game where you play the house.</dd><dt>hard part</dt><dd>Scale and accounting: 10 billion gambler-months in 656 seconds on two cores, with money conserved to $0.15 across the whole run.</dd><dt>learned</dt><dd>A ruin rate averaged over a long horizon rewards slaughter. The greedier casino reports a lower bankruptcy rate because it burned through the fragile gamblers early.</dd><dt>result</dt><dd>The lever that matters is the maximum bet. Capping bets at $11 makes more money over 30 years than letting a chaser bet $100. Comps never paid for themselves.</dd></dl></details>
+      <p class="cap">each dot is a set of house rules; more profit means more people going broke</p>
+      <details class="more"><summary>how I built it</summary><dl><dt>built</dt><dd>A casino in NumPy with eight gambler archetypes, full money accounting, and a Bayesian optimizer with my own Gaussian process over the house rules. No loop over gamblers anywhere. It grew out of nthchance.com, a browser game where you play the house.</dd><dt>hard part</dt><dd>Scale and accounting: 10 billion gambler-months in 656 seconds on two cores, with money conserved to $0.15 across the whole run.</dd><dt>learned</dt><dd>A ruin rate averaged over a long horizon rewards slaughter. The greedier casino reports a lower bankruptcy rate because it burned through the fragile gamblers early.</dd><dt>result</dt><dd>The lever that matters is the maximum bet. Capping bets at $11 makes more money over 30 years than letting a chaser bet $100. Comps never paid for themselves.</dd></dl></details>
     </article>
   </div>
 </section>
@@ -171,9 +165,9 @@
 <section class="sec" id="awards" aria-labelledby="h-awards">
   <h2 id="h-awards" class="label">awards &amp; grants</h2>
   <ul class="stats">
-    <li class="rv hi"><b style="--c:var(--pink)">2&times; Oral</b><span>Oral presentations, ICML 2026 and CVPR 2026</span></li>
-    <li class="rv hi"><b style="--c:var(--purple)" title="Proceedings of Machine Learning Research">2&times; PMLR</b><span>Proceedings of Machine Learning Research, ICLR 2026</span></li>
-    <li class="rv"><b style="--c:var(--violet)">$70k</b><span>YC compute grant</span></li>
+    <li class="rv hi"><b style="--c:var(--pink)">2&times; Oral</b><span>two papers picked for oral talks, at ICML and CVPR</span></li>
+    <li class="rv hi"><b style="--c:var(--purple)" title="Proceedings of Machine Learning Research">2&times; PMLR</b><span>two papers published in the Proceedings of Machine Learning Research (ICLR)</span></li>
+    <li class="rv"><b style="--c:var(--violet)">$70k</b><span>in compute from YC</span></li>
     <li class="rv"><b style="--c:var(--lime)">$3,000</b><span>ICML 2026 grant</span></li>
     <li class="rv"><b style="--c:var(--cyan)">$1,000</b><span>ICLR 2026 grant</span></li>
     <li class="rv"><b style="--c:var(--pink)">1st</b><span>AI Superhuman Challenge</span></li>

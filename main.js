@@ -90,12 +90,12 @@
       grid.width = cv.width; grid.height = cv.height;
       gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       gctx.clearRect(0, 0, W, H);
-      gctx.fillStyle = 'rgba(255,255,255,.045)';
+      gctx.fillStyle = 'rgba(255,255,255,.03)';
       for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) gctx.fillRect(i * newS + 2, j * newS + 2, newS - 4, newS - 4);
       // a few squares tinted pink, random each visit: mostly singles, some small clumps
       if (!tints || first || newS !== S) {
         tints = [];
-        var seeds = Math.max(6, Math.round(cols * rows * .009));
+        var seeds = Math.max(4, Math.round(cols * rows * .004));
         for (var sd = 0; sd < seeds; sd++) {
           var ci = Math.floor(Math.random() * cols), cj = Math.floor(Math.random() * rows);
           var grow = Math.random() < .35 ? 2 + Math.floor(Math.random() * 4) : 1;
