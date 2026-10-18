@@ -465,3 +465,48 @@ h1 .l{transform:none!important;color:var(--base,var(--text))!important}
   .idx b{font-size:16.5px}
   .idx span{font-size:12px}
 }
+/* the index as a wheel (main.js adds .wheel) */
+.idx.wheel{position:relative;height:330px;border:0;background:none;perspective:1000px;outline:none;touch-action:none;user-select:none;cursor:ns-resize;
+  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.idx.wheel::before{content:"";position:absolute;left:0;right:0;top:50%;height:92px;margin-top:-46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(255,62,157,.10),rgba(255,62,157,.02) 70%);pointer-events:none}
+.idx.wheel:focus-visible::before{border-color:var(--pink)}
+.idx.wheel a{position:absolute;left:0;right:64px;top:50%;height:80px;margin-top:-40px;padding:0 0 0 54px;display:flex;flex-direction:column;justify-content:center;gap:8px;
+  border:0;background:none;backface-visibility:hidden;will-change:transform,opacity;transition:none;-webkit-user-drag:none;cursor:pointer}
+.idx.wheel a:hover{padding-left:54px;background:none}
+.idx.wheel i{position:absolute;left:6px;top:50%;transform:translateY(-50%);font-size:13px}
+.idx.wheel b{font:600 32px/1 var(--sans);letter-spacing:-.02em;color:color-mix(in srgb,var(--text) calc(var(--on,0) * 100%),var(--mute))}
+.idx.wheel span{opacity:var(--on,0);font-size:13px}
+.idx.wheel a::after{content:"\2193";right:-44px;top:50%;transform:translateY(-50%);font:16px var(--mono);opacity:0}
+.idx.wheel a.cur::after{opacity:1}
+.idx.wheel a.cur:hover b{color:var(--pink)}
+.wh-ctl{position:absolute;right:0;top:50%;transform:translateY(-50%);display:none}
+.idx.wheel .wh-ctl{display:flex;flex-direction:column;align-items:center;gap:6px;right:auto;left:auto;right:0;margin-top:0}
+.wh-ctl button{width:30px;height:30px;border:1px solid var(--line);border-radius:50%;background:rgba(19,17,22,.8);color:var(--soft);font:13px var(--mono);cursor:pointer;transition:border-color .2s,color .2s}
+.wh-ctl button:hover{border-color:var(--pink);color:var(--pink)}
+.wh-n{font:11px var(--mono);color:var(--mute);letter-spacing:.04em;writing-mode:vertical-rl;padding:4px 0;display:none}
+.idx.wheel a.cur::after{right:-2px}
+@media (max-width:900px){
+  .idx.wheel{height:270px}
+  .idx.wheel a{padding-left:44px;right:48px}
+  .idx.wheel a:hover{padding-left:44px}
+  .idx.wheel b{font-size:26px}
+  .idx.wheel span{font-size:12px}
+  .wh-ctl button{width:34px;height:34px}
+}
+/* awards: the two headline items get weight, the rest get size */
+.stats li.hi{padding:28px 24px 26px 22px;background:linear-gradient(180deg,rgba(255,62,157,.09),rgba(255,62,157,0) 85%);box-shadow:inset 0 2px 0 var(--pink)}
+.stats li.hi + li.hi{border-left:1px solid var(--line)}
+.stats li.hi b{font:700 clamp(40px,4.6vw,64px)/1 var(--sans);letter-spacing:-.035em;color:var(--pink);margin-bottom:14px}
+.stats li.hi span{color:var(--soft);font-size:16px}
+.stats b{font:700 clamp(30px,3vw,42px)/1 var(--sans);letter-spacing:-.03em;transition:color .2s}
+.stats li:not(.hi):hover b{color:var(--pink)}
+.stats span{color:#C9C1C6}
+@media (max-width:720px){
+  .stats li.hi{padding:22px 14px 20px 14px}
+  .stats li.hi + li.hi{border-left:0}
+  .stats li.hi b{font-size:40px}
+  .stats b{font-size:28px}
+}
+.idx.wheel{perspective-origin:22% 50%}
+.idx.wheel a::after,.idx.wheel a.cur::after{content:none}
