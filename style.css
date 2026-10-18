@@ -412,3 +412,12 @@ main{max-width:calc(var(--max) + var(--pad)*2);margin:0 auto;padding:0 var(--pad
 @media (hover:none){.capt{opacity:1;transform:none;font-size:12px;left:9px;bottom:8px}}
 .grid2+.neurips{margin-top:40px}
 .neurips+.grid2{margin-top:40px}
+/* below the awards: a little brighter and larger */
+#research .au,#code .au{color:var(--soft)}
+.notes p{font-size:17.5px;line-height:1.72;color:#E2DBDF}
+.card h3{font-size:21px}
+.nlist .nt{font-size:clamp(20px,1.9vw,23px)}
+.repo p{font-size:17px;color:#E2DBDF}
+.with{font-size:16.5px;color:#E2DBDF}
+.ws em,.where{color:var(--text)}
+.capt{font-size:14px}
