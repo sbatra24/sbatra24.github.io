@@ -422,9 +422,12 @@ main{max-width:calc(var(--max) + var(--pad)*2);margin:0 auto;padding:0 var(--pad
 .ws em,.where{color:var(--text)}
 .capt{font-size:14px}
 /* press link: reads as part of the sentence, rewards a hover */
-.press{position:relative;color:var(--text);background:linear-gradient(var(--pink),var(--pink)) 0 100%/100% 1px no-repeat;padding-bottom:1px;transition:background-size .3s,color .2s}
-.press:hover{color:var(--pink);background-size:100% 2px}
-.press::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 8px);white-space:nowrap;font:12px/1 var(--mono);color:var(--text);
+.also a.press{border-bottom:0;position:relative;color:var(--text);background:linear-gradient(var(--pink),var(--pink)) 0 100%/100% 1px no-repeat;padding-bottom:1px;transition:background-size .3s,color .2s}
+.also a.press:hover{color:var(--pink);background-size:100% 2px}
+.also a.press::after{margin:0;content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 8px);white-space:nowrap;font:12px/1 var(--mono);color:var(--text);
   background:var(--card2);border:1px solid var(--line);border-radius:4px;padding:7px 9px;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}
-.press:hover::after{opacity:1;transform:none}
-@media (hover:none){.press::after{display:none}}
+.also a.press:hover::after{opacity:1;transform:none}
+.also a.press::before{content:"\2197";color:var(--pink);margin-right:6px}
+@media (hover:none){.also a.press::after{display:none}}
+.also li:has(.press){flex-basis:100%;margin-top:10px}
+.also li:has(.press)::before{content:none}
