@@ -145,7 +145,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { size(); });
   }
 
-  /* ---------- hero index: a dial with every section on it ---------- */
+  /* ---------- hero index: a pie you can spin, one slice per section ---------- */
   (function () {
     var nav = document.querySelector('.idx');
     if (!nav) return;
@@ -153,24 +153,36 @@
     var data = links.map(function (a) {
       return { href: a.getAttribute('href'), n: a.querySelector('i').textContent, name: a.querySelector('b').textContent, sub: a.querySelector('span').textContent };
     });
+    var RO = 48, RI = 27, GAP = 1.6, SVGNS = 'http://www.w3.org/2000/svg';
+    function pt(r, deg) { var a = deg * Math.PI / 180; return (50 + r * Math.cos(a)).toFixed(2) + ' ' + (50 + r * Math.sin(a)).toFixed(2); }
+    function slice(i) {
+      var mid = i * 360 / N - 90, a0 = mid - 180 / N + GAP, a1 = mid + 180 / N - GAP;
+      return 'M' + pt(RO, a0) + 'A' + RO + ' ' + RO + ' 0 0 1 ' + pt(RO, a1) + 'L' + pt(RI, a1) + 'A' + RI + ' ' + RI + ' 0 0 0 ' + pt(RI, a0) + 'Z';
+    }
     nav.classList.add('dial');
     nav.innerHTML =
-      '<svg class="dl-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="dl-track" cx="50" cy="50" r="40"/><circle class="dl-draw" cx="50" cy="50" r="40" pathLength="100"/></svg>' +
+      '<svg class="dl-pie" viewBox="0 0 100 100"><g class="dl-rot">' +
+      data.map(function (d, i) { return '<a href="' + d.href + '" class="dl-sl" data-i="' + i + '" aria-label="' + d.name + '"><path d="' + slice(i) + '"/></a>'; }).join('') +
+      '</g></svg>' +
       '<span class="dl-ptr" aria-hidden="true"></span>' +
-      data.map(function (d, i) { return '<a class="dl-it" href="' + d.href + '" data-i="' + i + '"><i>' + d.n + '</i>' + d.name + '</a>'; }).join('') +
-      '<a class="dl-c" href="' + data[0].href + '" aria-live="polite"><i></i><b></b><span></span><em>go ↓</em></a>';
-    var its = [].slice.call(nav.querySelectorAll('.dl-it')), ctr = nav.querySelector('.dl-c');
+      data.map(function (d) { return '<span class="dl-it" aria-hidden="true"><i>' + d.n + '</i>' + d.name + '</span>'; }).join('') +
+      '<a class="dl-c" href="' + data[0].href + '" aria-live="polite"><i></i><b></b><span></span><em>go ↓</em></a>' +
+      '<button type="button" class="dl-spin l" aria-label="Turn back">↺</button><button type="button" class="dl-spin r" aria-label="Turn forward">↻</button>' +
+      '<p class="dl-hint">' + (matchMedia('(hover: none)').matches ? 'swipe the pie to spin it' : 'drag or scroll to spin') + '</p>';
+    var sls = [].slice.call(nav.querySelectorAll('.dl-sl')), its = [].slice.call(nav.querySelectorAll('.dl-it'));
+    var rot = nav.querySelector('.dl-rot'), ctr = nav.querySelector('.dl-c');
     var pos = reduce ? 0 : -1.4, target = 0, raf = 0, shown = -1, touched = false, timer = 0, peek = -1;
 
     function cur() { return peek >= 0 ? peek : ((Math.round(target) % N) + N) % N; }
     function place() {
-      var box = nav.clientWidth, R = box * .4;
-      its.forEach(function (a, i) {
-        var ang = (i - pos) * (360 / N) - 90, rad = ang * Math.PI / 180;
-        a.style.transform = 'translate(' + (Math.cos(rad) * R).toFixed(1) + 'px,' + (Math.sin(rad) * R).toFixed(1) + 'px) translate(-50%,-50%)';
-        a.classList.toggle('on', i === cur());
+      var box = nav.clientWidth, R = box * (RO + RI) / 200, c = cur();
+      rot.setAttribute('transform', 'rotate(' + (-pos * 360 / N).toFixed(2) + ' 50 50)');
+      its.forEach(function (el, i) {
+        var rad = ((i - pos) * 360 / N - 90) * Math.PI / 180;
+        el.style.transform = 'translate(' + (Math.cos(rad) * R).toFixed(1) + 'px,' + (Math.sin(rad) * R).toFixed(1) + 'px) translate(-50%,-50%)';
+        el.classList.toggle('on', i === c);
+        sls[i].classList.toggle('on', i === c);
       });
-      var c = cur();
       if (c !== shown) {
         shown = c; var d = data[c];
         ctr.setAttribute('href', d.href);
@@ -190,15 +202,21 @@
     function go(n) { peek = -1; target = n; if (!raf) raf = requestAnimationFrame(tick); }
     function nearest(i) { var d = ((i - target) % N + N + N / 2) % N - N / 2; return Math.round(target + d); }
     function stopAuto() { touched = true; clearInterval(timer); }
+    // a slow turn on its own until someone touches it
+    function auto() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!document.hidden) go(Math.round(target) + 1); }, 3200); }
 
-    its.forEach(function (a, i) {
-      // hovering previews a section in the middle without turning the dial out from under the cursor
-      a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { stopAuto(); peek = i; place(); } });
+    nav.querySelector('.dl-spin.l').addEventListener('click', function () { stopAuto(); go(Math.round(target) - 1); });
+    nav.querySelector('.dl-spin.r').addEventListener('click', function () { stopAuto(); go(Math.round(target) + 1); });
+
+    // hovering a slice previews it in the middle without turning the pie out from under the cursor
+    sls.forEach(function (a, i) {
+      a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !drag) { stopAuto(); peek = i; place(); } });
       a.addEventListener('pointerleave', function () { if (peek === i) { peek = -1; place(); } });
-      a.addEventListener('focus', function () { stopAuto(); peek = -1; go(nearest(i)); });
+      a.addEventListener('focus', function () { stopAuto(); go(nearest(i)); });
     });
     nav.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') clearInterval(timer); });
     nav.addEventListener('pointerleave', function () { if (!touched) auto(); });
+
     var acc = 0, accT = 0;
     nav.addEventListener('wheel', function (e) {
       e.preventDefault(); stopAuto();
@@ -211,8 +229,36 @@
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); stopAuto(); go(Math.round(target) + 1); }
       else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); stopAuto(); go(Math.round(target) - 1); }
     });
-    // a slow turn on its own until someone touches it
-    function auto() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!document.hidden) go(Math.round(target) + 1); }, 3200); }
+
+    // grab the pie anywhere and turn it
+    var drag = null, dragged = false;
+    function angAt(e) { var r = nav.getBoundingClientRect(); return Math.atan2(e.clientY - r.top - r.height / 2, e.clientX - r.left - r.width / 2) * 180 / Math.PI; }
+    nav.addEventListener('pointerdown', function (e) {
+      if (e.button > 0 || e.target.closest('.dl-c, .dl-spin')) return;
+      drag = { last: angAt(e), turn: 0, t: target, x: e.clientX, y: e.clientY, id: e.pointerId }; dragged = false;
+    });
+    nav.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      if (!dragged && Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 6) {
+        dragged = true; stopAuto(); peek = -1;
+        try { nav.setPointerCapture(drag.id); } catch (err) {}
+        nav.classList.add('grab');
+      }
+      if (!dragged) return;
+      var a = angAt(e), d = a - drag.last;
+      if (d > 180) d -= 360; else if (d < -180) d += 360;
+      drag.turn += d; drag.last = a;
+      target = pos = drag.t - drag.turn / (360 / N);
+      place();
+    });
+    function release() {
+      if (!drag) return;
+      drag = null; nav.classList.remove('grab');
+      if (dragged) { go(Math.round(target)); setTimeout(function () { dragged = false; }, 0); }
+    }
+    nav.addEventListener('pointerup', release);
+    nav.addEventListener('pointercancel', release);
+    nav.addEventListener('click', function (e) { if (dragged) { e.preventDefault(); e.stopPropagation(); } }, true);
 
     window.addEventListener('resize', place);
     place();
@@ -360,33 +406,8 @@
     chW = innerWidth; buildCharts();
   });
 
-  /* ---------- top bar ---------- */
-  var bar = document.getElementById('bar');
-  var links = [].slice.call(document.querySelectorAll('.bar nav a'));
-  var prog = document.getElementById('prog');
-  function onScroll() {
-    bar.classList.toggle('solid', window.scrollY > 40);
-    var max = document.documentElement.scrollHeight - innerHeight;
-    var pr = max > 0 ? Math.min(1, scrollY / max) : 0;
-    prog.style.setProperty('--p', pr.toFixed(4));
-    prog.classList.toggle('done', pr > .995);
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
+  /* ---------- reveal on scroll ---------- */
   if ('IntersectionObserver' in window) {
-    var secIO = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); });
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    ['research', 'code', 'awards', 'photos'].forEach(function (id) {
-      var el = document.getElementById(id); if (el) secIO.observe(el);
-    });
-
-    /* reveal on scroll */
     var rv = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); }
@@ -489,7 +510,7 @@
   }
   function setRain(on) {
     rOn = on;
-    rbtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (rbtn) rbtn.setAttribute('aria-pressed', on ? 'true' : 'false');
     rc.classList.toggle('on', on);
     if (on) {
       rSize();
@@ -503,7 +524,7 @@
     }
   }
   function toggleRain() { setRain(!rOn); }
-  rbtn.addEventListener('click', toggleRain);
+  if (rbtn) rbtn.addEventListener('click', toggleRain);
   window.addEventListener('pointermove', function (e) { umb.x = e.clientX; umb.y = e.clientY; }, { passive: true });
   document.addEventListener('pointerleave', function () { umb.x = umb.y = -9999; });
   window.addEventListener('resize', function () { if (rOn) rSize(); });
@@ -515,7 +536,7 @@
   var pal = document.getElementById('pal'), q = document.getElementById('pal-q'), list = document.getElementById('pal-list');
   var toast = document.getElementById('toast'), kbtn = document.getElementById('kbtn');
   var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
-  if (!isMac) document.getElementById('kkey').textContent = 'Ctrl K';
+  if (!isMac && document.getElementById('kkey')) document.getElementById('kkey').textContent = 'Ctrl K';
 
   var COLOR = { 'c-neurips': 'var(--pink)', 'c-icml': 'var(--violet)', 'c-cvpr': 'var(--cyan)', 'c-iclr': 'var(--lime)' };
   var items = [];
@@ -623,7 +644,7 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
-  kbtn.addEventListener('click', openPal);
+  if (kbtn) kbtn.addEventListener('click', openPal);
   q.addEventListener('input', function () { sel = 0; render(); });
   q.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowDown') { move(1); e.preventDefault(); }
